@@ -47,7 +47,7 @@ const MOCK_DATA = {
 };
 
 export default function LuxeSalonApp() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [activePage, setActivePage] = useState('dashboard');
   const [user, setUser] = useState({ name: 'Priya Sharma', role: 'owner' });
 
