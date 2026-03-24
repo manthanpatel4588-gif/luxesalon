@@ -2,37 +2,45 @@ import { supabase } from '@/lib/supabase'
 import { NextResponse } from 'next/server'
 
 export async function POST(req) {
-  const { email, password } = await req.json()
+  try {
+    const { email, password } = await req.json();
 
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password
-  })
+    // 1. Database se user fetch karo (saath mein salon details bhi)
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('*, salons(*)')
+      .eq('email', email)
+      .single();
 
-  if (error) {
-    return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
-  }
-
-  // Get user profile from your users table
-  const { data: user } = await supabase
-    .from('users')
-    .select('*, salons(*)')
-    .eq('email', email)
-    .single()
-
-  // Block if salon is inactive or expired
-  if (user.role === 'owner') {
-    if (user.salons?.status === 'inactive') {
-      return NextResponse.json({ error: 'Account deactivated' }, { status: 403 })
+    // 2. Check karo agar user mila ya nahi
+    if (error || !user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 401 });
     }
-    const today = new Date().toISOString().split('T')[0]
-    if (user.salons?.expiry < today) {
-      return NextResponse.json({ error: 'License expired' }, { status: 403 })
-    }
-  }
 
-  return NextResponse.json({
-    user,
-    token: data.session.access_token
-  })
+    // 3. Password Check (Direct comparison kyunki aapne hash nahi kiya hai)
+    if (user.password !== password) {
+      return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
+    }
+
+    // 4. Status aur Expiry check (Jo aapne pehle likha tha)
+    if (user.role === 'owner' && user.salons) {
+      if (user.salons.status === 'inactive') {
+        return NextResponse.json({ error: 'Account deactivated' }, { status: 403 });
+      }
+      
+      const today = new Date().toISOString().split('T')[0];
+      if (user.salons.expiry < today) {
+        return NextResponse.json({ error: 'License expired' }, { status: 403 });
+      }
+    }
+
+    // 5. Success! User bhej do
+    return NextResponse.json({ 
+      user: { id: user.id, email: user.email, name: user.name, role: user.role },
+      salon: user.salons 
+    });
+
+  } catch (err) {
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+  }
 }
