@@ -180,8 +180,101 @@ function CustomersView() {
   );
 }
 
-function VisitsView() {
-  return <div className="p-10 border border-dashed border-[#C9A84C26] rounded-2xl text-center text-gray-500">Visit History list will appear here...</div>;
+function AddVisitModal({ isOpen, onClose, onRefresh }) {
+  const [formData, setFormData] = useState({
+    name: '', mobile: '', service: '', amount: '', 
+    date: new Date().toISOString().split('T')[0],
+    payment_status: 'paid', payment_method: 'cash'
+  });
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+    
+    // 1. Pehle Customer dhoondo ya naya banao
+    let customerId;
+    const { data: existing } = await supabase
+      .from('customers')
+      .select('id')
+      .eq('mobile', formData.mobile)
+      .single();
+
+    if (existing) {
+      customerId = existing.id;
+    } else {
+      const { data: newCust, error: cErr } = await supabase
+        .from('customers')
+        .insert([{ name: formData.name, mobile: formData.mobile }])
+        .select()
+        .single();
+      if (cErr) return alert("Customer error!");
+      customerId = newCust.id;
+    }
+
+    // 2. Ab Visit record karo
+    const { error: vErr } = await supabase
+      .from('visits')
+      .insert([{
+        customer_id: customerId,
+        service: formData.service,
+        amount: Number(formData.amount),
+        date: formData.date,
+        payment_status: formData.payment_status,
+        payment_method: formData.payment_method
+      }]);
+
+    if (!vErr) {
+      alert("Visit Saved!");
+      onRefresh();
+      onClose();
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
+      <div className="bg-[#111113] border border-[#C9A84C26] p-8 rounded-3xl w-full max-w-lg shadow-2xl">
+        <h3 className="text-[#C9A84C] text-2xl font-serif mb-6">New Client Visit</h3>
+        
+        <form onSubmit={handleSave} className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <input placeholder="Client Name" className="bg-black border border-[#C9A84C14] p-3 rounded-xl outline-none" 
+              onChange={e => setFormData({...formData, name: e.target.value})} required />
+            <input placeholder="Mobile" className="bg-black border border-[#C9A84C14] p-3 rounded-xl outline-none" 
+              onChange={e => setFormData({...formData, mobile: e.target.value})} required />
+          </div>
+
+          <input placeholder="Service (e.g. Haircut + Beard)" className="w-full bg-black border border-[#C9A84C14] p-3 rounded-xl outline-none" 
+            onChange={e => setFormData({...formData, service: e.target.value})} required />
+
+          <div className="grid grid-cols-2 gap-4">
+            <input type="number" placeholder="Amount (₹)" className="bg-black border border-[#C9A84C14] p-3 rounded-xl outline-none" 
+              onChange={e => setFormData({...formData, amount: e.target.value})} required />
+            <input type="date" className="bg-black border border-[#C9A84C14] p-3 rounded-xl outline-none text-gray-400" 
+              value={formData.date} onChange={e => setFormData({...formData, date: e.target.value})} />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <select className="bg-black border border-[#C9A84C14] p-3 rounded-xl outline-none text-gray-400"
+              onChange={e => setFormData({...formData, payment_status: e.target.value})}>
+              <option value="paid">Paid</option>
+              <option value="pending">Pending</option>
+            </select>
+            <select className="bg-black border border-[#C9A84C14] p-3 rounded-xl outline-none text-gray-400"
+              onChange={e => setFormData({...formData, payment_method: e.target.value})}>
+              <option value="cash">Cash</option>
+              <option value="online">Online / UPI</option>
+            </select>
+          </div>
+
+          <div className="flex gap-4 pt-4">
+            <button type="button" onClick={onClose} className="flex-1 text-gray-500 font-medium">Cancel</button>
+            <button type="submit" className="flex-1 bg-[#C9A84C] text-black py-3 rounded-xl font-bold hover:shadow-[0_0_20px_rgba(201,168,76,0.3)] transition-all">Save Record</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }
 
 function WhatsAppView() {
