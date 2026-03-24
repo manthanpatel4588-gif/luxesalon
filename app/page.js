@@ -1,12 +1,12 @@
 "use client";
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+// Ye sab icons yahan hone chahiye, varna Vercel error dega:
 import { 
   LayoutDashboard, Users, Scissors, BarChart3, History, 
   LogOut, Plus, Search, Edit, Trash2, X, MessageCircle, DollarSign, FileText, Calendar
 } from 'lucide-react';
-
 // --- MAIN APP COMPONENT ---
 export default function LuxeSalonApp() {
   const [user, setUser] = useState(null);
@@ -210,14 +210,15 @@ function NavItem({ icon, label, active, onClick }) {
 
 function StatCard({ label, value, icon, color = "text-white" }) {
   return (
-    <div className="bg-[#111113] border border-[rgba(201,168,76,0.15)] p-6 rounded-xl relative overflow-hidden group hover:border-[rgba(201,168,76,0.4)] transition-all">
-      <div className="text-[#C9A84C] opacity-20 absolute -right-2 -bottom-2 group-hover:scale-110 transition-transform">{React.cloneElement(icon, { size: 64 })}</div>
+    <div className="bg-[#111113] border border-[rgba(201,168,76,0.15)] p-8 rounded-[2.5rem] hover:border-[#C9A84C33] transition-all group">
+      <div className="text-[#C9A84C] mb-4 bg-[#C9A84C0A] w-12 h-12 flex items-center justify-center rounded-2xl group-hover:scale-110 transition-transform">
+        {icon}
+      </div>
       <div className="text-[10px] text-gray-500 uppercase tracking-widest mb-1 font-bold">{label}</div>
       <div className={`text-3xl font-serif font-bold ${color}`}>{value}</div>
     </div>
   );
 }
-
 function CustomersView() {
   const [list, setList] = useState([]);
   const [search, setSearch] = useState('');
