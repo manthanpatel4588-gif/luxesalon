@@ -220,58 +220,256 @@ function StatCard({ label, value, icon, color = "text-white" }) {
 
 function CustomersView() {
   const [list, setList] = useState([]);
+  const [search, setSearch] = useState('');
+
   useEffect(() => {
     supabase.from('customers').select('*').order('name').then(({ data }) => setList(data || []));
   }, []);
 
+  const filtered = list.filter(c => c.name.toLowerCase().includes(search.toLowerCase()) || c.mobile.includes(search));
+
   return (
-    <div className="bg-[#111113] border border-[rgba(201,168,76,0.15)] rounded-xl overflow-hidden">
-      <table className="w-full text-left text-sm">
-        <thead className="bg-[#18181C] text-[#C9A84C] text-[10px] uppercase tracking-widest font-bold">
-          <tr><th className="p-4">Name</th><th className="p-4">Mobile</th><th className="p-4 text-right">Actions</th></tr>
-        </thead>
-        <tbody className="divide-y divide-[rgba(201,168,76,0.1)]">
-          {list.map(c => (
-            <tr key={c.id} className="hover:bg-white/5">
-              <td className="p-4 font-bold">{c.name}</td>
-              <td className="p-4 text-gray-500">{c.mobile}</td>
-              <td className="p-4 text-right flex justify-end gap-2"><Edit size={16} className="text-gray-500 cursor-pointer"/><Trash2 size={16} className="text-red-900 cursor-pointer"/></td>
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <div className="relative w-72">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+          <input 
+            className="w-full bg-[#111113] border border-[rgba(201,168,76,0.15)] p-2.5 pl-10 rounded-xl outline-none focus:border-[#C9A84C]" 
+            placeholder="Search name or mobile..." 
+            onChange={e => setSearch(e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className="bg-[#111113] border border-[rgba(201,168,76,0.15)] rounded-[2rem] overflow-hidden">
+        <table className="w-full text-left">
+          <thead className="bg-white/5 text-[#C9A84C] text-[10px] uppercase tracking-[0.2em] font-bold">
+            <tr>
+              <th className="p-6">Client Name</th>
+              <th className="p-6">Mobile Number</th>
+              <th className="p-6 text-right">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-white/5">
+            {filtered.map(c => (
+              <tr key={c.id} className="hover:bg-white/5 transition-colors group">
+                <td className="p-6 font-serif text-lg">{c.name}</td>
+                <td className="p-6 text-gray-500 tracking-wider">{c.mobile}</td>
+                <td className="p-6 text-right">
+                  <div className="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button className="p-2 hover:bg-[#C9A84C1A] rounded-lg text-gray-400 hover:text-[#C9A84C]"><Edit size={16}/></button>
+                    <button className="p-2 hover:bg-red-500/10 rounded-lg text-gray-400 hover:text-red-500"><Trash2 size={16}/></button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
 
-function VisitHistoryView() {
-  const [visits, setVisits] = useState([]);
+function VisitModal({ onClose, onSave }) {
+  const [customerType, setCustomerType] = useState('new'); // 'existing' or 'new'
+  const [customers, setCustomers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({
+    customer_id: '', name: '', mobile: '', service: '', 
+    amount: '', date: new Date().toISOString().split('T')[0],
+    status: 'paid', method: 'cash'
+  });
+
+  // Purane customers load karne ke liye
   useEffect(() => {
-    supabase.from('visits').select(`*, customers(name, mobile)`).order('date', {ascending: false}).then(({data}) => setVisits(data || []));
+    async function loadCustomers() {
+      const { data } = await supabase.from('customers').select('*').order('name');
+      setCustomers(data || []);
+    }
+    loadCustomers();
   }, []);
 
+  const handleSave = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      let cid = form.customer_id;
+      // Agar naya customer hai toh pehle use save karo
+      if (customerType === 'new') {
+        const { data, error } = await supabase
+          .from('customers')
+          .insert([{ name: form.name, mobile: form.mobile }])
+          .select().single();
+        if (error) throw error;
+        cid = data.id;
+      }
+
+      // Visit record save karo
+      const { error: vErr } = await supabase.from('visits').insert([{
+        customer_id: cid, service: form.service, amount: Number(form.amount),
+        date: form.date, payment_status: form.status, payment_method: form.method
+      }]);
+      
+      if (vErr) throw vErr;
+      onSave(); // Dashboard refresh karne ke liye
+      onClose();
+    } catch (err) {
+      alert("Error: " + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="bg-[#111113] border border-[rgba(201,168,76,0.15)] rounded-xl overflow-hidden">
-      <table className="w-full text-left text-xs md:text-sm">
-        <thead className="bg-[#18181C] text-[#C9A84C] uppercase text-[10px] tracking-widest">
-          <tr><th className="p-4">Customer</th><th className="p-4">Service</th><th className="p-4">Amount</th><th className="p-4">Date</th><th className="p-4">Status</th></tr>
-        </thead>
-        <tbody className="divide-y divide-[rgba(201,168,76,0.1)]">
-          {visits.map(v => (
-            <tr key={v.id} className="hover:bg-white/5">
-              <td className="p-4 font-bold">{v.customers?.name}</td>
-              <td className="p-4 text-gray-400">{v.service}</td>
-              <td className="p-4 text-[#C9A84C]">₹{v.amount}</td>
-              <td className="p-4 text-gray-500">{v.date}</td>
-              <td className="p-4"><span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${v.payment_status === 'paid' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>{v.payment_status.toUpperCase()}</span></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-50 p-4">
+      <div className="bg-[#111113] border border-[rgba(201,168,76,0.3)] p-10 rounded-[2.5rem] w-full max-w-xl shadow-2xl">
+        <h3 className="text-[#C9A84C] text-2xl font-serif mb-6">Record New Visit</h3>
+        
+        {/* SS wala Toggle Switch */}
+        <div className="flex bg-black p-1 rounded-2xl mb-8 border border-white/5">
+          <button type="button" onClick={() => setCustomerType('existing')} 
+            className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all ${customerType === 'existing' ? 'bg-[#C9A84C] text-black shadow-lg' : 'text-gray-500'}`}>
+            Existing Customer
+          </button>
+          <button type="button" onClick={() => setCustomerType('new')} 
+            className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all ${customerType === 'new' ? 'bg-[#C9A84C] text-black shadow-lg' : 'text-gray-500'}`}>
+            New Customer
+          </button>
+        </div>
+
+        <form onSubmit={handleSave} className="grid grid-cols-2 gap-4">
+          {customerType === 'existing' ? (
+            <select className="col-span-2 bg-black border border-white/10 p-4 rounded-2xl outline-none text-gray-400" 
+              onChange={e => setForm({...form, customer_id: e.target.value})} required>
+              <option value="">Select Existing Client...</option>
+              {customers.map(c => <option key={c.id} value={c.id}>{c.name} ({c.mobile})</option>)}
+            </select>
+          ) : (
+            <>
+              <input placeholder="Full Name *" className="bg-black border border-white/10 p-4 rounded-2xl outline-none focus:border-[#C9A84C]" 
+                onChange={e => setForm({...form, name: e.target.value})} required />
+              <input placeholder="Mobile Number *" className="bg-black border border-white/10 p-4 rounded-2xl outline-none focus:border-[#C9A84C]" 
+                onChange={e => setForm({...form, mobile: e.target.value})} required />
+            </>
+          )}
+
+          <input placeholder="Services (e.g. Haircut, Blow Dry) *" className="col-span-2 bg-black border border-white/10 p-4 rounded-2xl outline-none focus:border-[#C9A84C]" 
+            onChange={e => setForm({...form, service: e.target.value})} required />
+
+          <input type="number" placeholder="Amount (₹) *" className="bg-black border border-white/10 p-4 rounded-2xl outline-none focus:border-[#C9A84C]" 
+            onChange={e => setForm({...form, amount: e.target.value})} required />
+          
+          <input type="date" value={form.date} className="bg-black border border-white/10 p-4 rounded-2xl outline-none text-gray-400" 
+            onChange={e => setForm({...form, date: e.target.value})} />
+
+          <select className="bg-black border border-white/10 p-4 rounded-2xl outline-none text-sm" 
+            onChange={e => setForm({...form, status: e.target.value})}>
+            <option value="paid">Paid</option>
+            <option value="pending">Pending</option>
+          </select>
+
+          <select className="bg-black border border-white/10 p-4 rounded-2xl outline-none text-sm" 
+            onChange={e => setForm({...form, method: e.target.value})}>
+            <option value="cash">Cash</option>
+            <option value="online">Online / UPI</option>
+          </select>
+
+          <button type="submit" disabled={loading} className="col-span-2 bg-[#C9A84C] text-black font-bold py-4 rounded-2xl mt-4 hover:bg-[#E2C97E] transition-all">
+            {loading ? "Processing..." : "Save Visit Record"}
+          </button>
+          
+          <button type="button" onClick={onClose} className="col-span-2 text-gray-600 text-[10px] uppercase tracking-widest mt-2 hover:text-white">Cancel</button>
+        </form>
+      </div>
     </div>
   );
 }
 
 function ReportsView() {
-  return <div className="p-10 border border-dashed border-white/10 rounded-xl text-center text-gray-500 italic">Financial Reports generated here with date filters.</div>;
+  const [range, setRange] = useState({ start: new Date().toISOString().split('T')[0], end: new Date().toISOString().split('T')[0] });
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  async function generateReport() {
+    setLoading(true);
+    const { data: visits } = await supabase
+      .from('visits')
+      .select('*, customers(name)')
+      .gte('date', range.start)
+      .lte('date', range.end);
+
+    const summary = visits?.reduce((acc, v) => {
+      acc.total += Number(v.amount);
+      if (v.payment_status === 'paid') {
+        if (v.payment_method === 'cash') acc.cash += Number(v.amount);
+        else acc.online += Number(v.amount);
+      } else {
+        acc.pending += Number(v.amount);
+      }
+      return acc;
+    }, { total: 0, cash: 0, online: 0, pending: 0, count: visits.length });
+
+    setData({ visits, summary });
+    setLoading(false);
+  }
+
+  return (
+    <div className="space-y-8">
+      {/* Filters */}
+      <div className="bg-[#111113] border border-[rgba(201,168,76,0.15)] p-6 rounded-[2rem] flex items-end gap-6">
+        <div className="flex-1 space-y-2">
+          <label className="text-[10px] text-gray-500 uppercase tracking-widest ml-1">From Date</label>
+          <input type="date" className="w-full bg-black border border-white/10 p-3 rounded-xl outline-none" value={range.start} onChange={e => setRange({...range, start: e.target.value})} />
+        </div>
+        <div className="flex-1 space-y-2">
+          <label className="text-[10px] text-gray-500 uppercase tracking-widest ml-1">To Date</label>
+          <input type="date" className="w-full bg-black border border-white/10 p-3 rounded-xl outline-none" value={range.end} onChange={e => setRange({...range, end: e.target.value})} />
+        </div>
+        <button onClick={generateReport} className="bg-[#C9A84C] text-black px-8 py-3 rounded-xl font-bold hover:bg-[#E2C97E]">Generate Report</button>
+      </div>
+
+      {data && (
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
+          {/* Report Stats */}
+          <div className="grid grid-cols-4 gap-4">
+            <div className="bg-[#111113] p-6 rounded-2xl border border-white/5">
+              <div className="text-[10px] text-gray-500 uppercase mb-1">Total Collection</div>
+              <div className="text-2xl font-serif text-[#C9A84C]">₹{data.summary.total}</div>
+            </div>
+            <div className="bg-[#111113] p-6 rounded-2xl border border-white/5">
+              <div className="text-[10px] text-gray-500 uppercase mb-1">Cash Income</div>
+              <div className="text-2xl font-serif text-green-500">₹{data.summary.cash}</div>
+            </div>
+            <div className="bg-[#111113] p-6 rounded-2xl border border-white/5">
+              <div className="text-[10px] text-gray-500 uppercase mb-1">Online Income</div>
+              <div className="text-2xl font-serif text-blue-400">₹{data.summary.online}</div>
+            </div>
+            <div className="bg-[#111113] p-6 rounded-2xl border border-white/5">
+              <div className="text-[10px] text-gray-500 uppercase mb-1">Pending</div>
+              <div className="text-2xl font-serif text-red-500">₹{data.summary.pending}</div>
+            </div>
+          </div>
+
+          {/* Report Table */}
+          <div className="bg-[#111113] border border-white/5 rounded-[2rem] overflow-hidden">
+            <table className="w-full text-left text-sm">
+              <thead className="bg-white/5 text-gray-500 text-[10px] uppercase tracking-widest">
+                <tr><th className="p-4">Client</th><th className="p-4">Service</th><th className="p-4">Amount</th><th className="p-4">Status</th></tr>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                {data.visits.map(v => (
+                  <tr key={v.id}>
+                    <td className="p-4 font-bold">{v.customers?.name}</td>
+                    <td className="p-4 text-gray-400">{v.service}</td>
+                    <td className="p-4">₹{v.amount}</td>
+                    <td className="p-4 text-[10px] uppercase font-bold">{v.payment_status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
