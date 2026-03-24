@@ -96,42 +96,86 @@ function NavItem({ icon, label, active, onClick }) {
   );
 }
 
-function DashboardView({ data }) {
+function DashboardView() {
+  const [stats, setStats] = useState({ totalCustomers: 0, todayVisits: 0, dailyIncome: 0 });
+
+  useEffect(() => {
+    async function fetchStats() {
+      // 1. Total Customers Count
+      const { count: customerCount } = await supabase
+        .from('customers')
+        .select('*', { count: 'exact', head: true });
+
+      // 2. Today's Visits & Income
+      const today = new Date().toISOString().split('T')[0];
+      const { data: visits } = await supabase
+        .from('visits')
+        .select('amount')
+        .eq('date', today);
+
+      const income = visits?.reduce((sum, v) => sum + Number(v.amount), 0) || 0;
+
+      setStats({
+        totalCustomers: customerCount || 0,
+        todayVisits: visits?.length || 0,
+        dailyIncome: income
+      });
+    }
+    fetchStats();
+  }, []);
+
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-4 gap-4">
-        <StatCard label="Total Customers" value={data.totalCustomers} icon={<Users size={20}/>} color="text-[#C9A84C]" />
-        <StatCard label="Today's Visits" value={data.todayCustomers} icon={<Scissors size={20}/>} />
-        <StatCard label="Daily Income" value={`₹${data.dailyIncome}`} icon={<DollarSign size={20}/>} color="text-green-500" />
-        <StatCard label="Monthly Income" value={`₹${data.monthlyIncome}`} icon={<BarChart3 size={20}/>} color="text-[#C9A84C]" />
+        <StatCard label="Total Customers" value={stats.totalCustomers} icon={<Users size={20}/>} color="text-[#C9A84C]" />
+        <StatCard label="Today's Visits" value={stats.todayVisits} icon={<Scissors size={20}/>} />
+        <StatCard label="Daily Income" value={`₹${stats.dailyIncome}`} icon={<DollarSign size={20}/>} color="text-green-500" />
+        <StatCard label="Monthly Income" value="₹0" icon={<BarChart3 size={20}/>} color="text-[#C9A84C]" />
       </div>
-      <div className="grid grid-cols-3 gap-6">
-        <div className="col-span-2 bg-[#111113] border border-[#C9A84C26] p-6 rounded-2xl h-80">
-          <Bar data={{ labels: data.monthlyData.map(d => d.month), datasets: [{ label: 'Income', data: data.monthlyData.map(d => d.income), backgroundColor: '#C9A84C26', borderColor: '#C9A84C', borderWidth: 2 }] }} options={{ responsive: true, maintainAspectRatio: false }} />
-        </div>
-        <div className="bg-[#111113] border border-[#C9A84C26] p-6 rounded-2xl h-80">
-          <Doughnut data={{ labels: ['Cash', 'Online', 'Pending'], datasets: [{ data: [data.paymentBreakdown.cash, data.paymentBreakdown.online, data.paymentBreakdown.pending], backgroundColor: ['#C9A84C', '#5C95E0', '#E05C5C'] }] }} options={{ responsive: true, maintainAspectRatio: false }} />
-        </div>
-      </div>
+      {/* Charts ko abhi ke liye khali ya 0 data dikhao */}
     </div>
   );
 }
-
 function CustomersView() {
+  const [showModal, setShowModal] = useState(false);
+  const [name, setName] = useState('');
+  const [mobile, setMobile] = useState('');
+
+  const handleAdd = async (e) => {
+    e.preventDefault();
+    const { error } = await supabase
+      .from('customers')
+      .insert([{ name, mobile }]);
+
+    if (!error) {
+      setShowModal(false);
+      // Refresh list logic here
+      window.location.reload(); 
+    }
+  };
+
   return (
-    <div className="bg-[#111113] border border-[#C9A84C26] rounded-2xl overflow-hidden">
-      <div className="p-4 border-b border-[#C9A84C26] flex justify-between items-center">
-        <h3 className="font-serif text-[#C9A84C]">Real-time Customer Data</h3>
-        <button className="bg-[#C9A84C] text-black text-xs px-3 py-1.5 rounded-md font-bold hover:bg-[#E2C97E]">Add New</button>
+    <div>
+      <div className="flex justify-between mb-6">
+        <h2 className="text-[#C9A84C] font-serif text-2xl">Customer List</h2>
+        <button onClick={() => setShowModal(true)} className="bg-[#C9A84C] text-black px-4 py-2 rounded-lg font-bold">+ Add Customer</button>
       </div>
-      <table className="w-full text-left text-sm">
-        <thead className="bg-[#18181C] text-[#C9A84C] uppercase text-[10px] tracking-widest">
-          <tr><th className="p-4">Name</th><th className="p-4">Mobile</th><th className="p-4">Total Spend</th><th className="p-4">Action</th></tr>
-        </thead>
-        <tbody className="divide-y divide-[#C9A84C14]">
-          <tr className="text-gray-500"><td colSpan="4" className="p-10 text-center italic">Connect your Supabase table to see real customers here...</td></tr>
-        </tbody>
-      </table>
+
+      {/* Modal Popup */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+          <div className="bg-[#111113] border border-[#C9A84C26] p-8 rounded-2xl w-full max-w-md">
+            <h3 className="text-[#C9A84C] text-xl mb-4">New Customer</h3>
+            <input placeholder="Full Name" className="w-full bg-black border border-[#C9A84C14] p-3 rounded-lg mb-4" onChange={e => setName(e.target.value)} />
+            <input placeholder="Mobile Number" className="w-full bg-black border border-[#C9A84C14] p-3 rounded-lg mb-4" onChange={e => setMobile(e.target.value)} />
+            <div className="flex gap-4">
+              <button onClick={() => setShowModal(false)} className="flex-1 text-gray-500">Cancel</button>
+              <button onClick={handleAdd} className="flex-1 bg-[#C9A84C] text-black py-2 rounded-lg font-bold">Save</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Table code below... */}
     </div>
   );
 }
