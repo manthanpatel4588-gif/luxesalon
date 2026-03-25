@@ -7,23 +7,23 @@ const today = () => new Date().toISOString().split('T')[0]
 
 // ── Icons ────────────────────────────────────────────────
 const Icons = {
-  dashboard: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{width:16,height:16}}><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>,
-  users: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{width:16,height:16}}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
-  history: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{width:16,height:16}}><polyline points="12 8 12 12 14 14"/><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"/></svg>,
-  chart: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{width:16,height:16}}><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
-  whatsapp: () => <svg viewBox="0 0 24 24" fill="currentColor" style={{width:16,height:16}}><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>,
-  plus: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{width:16,height:16}}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
-  search: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{width:14,height:14}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
-  edit: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{width:14,height:14}}><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>,
-  trash: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{width:14,height:14}}><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>,
-  x: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{width:18,height:18}}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-  logout: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{width:16,height:16}}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>,
-  dollar: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{width:20,height:20}}><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
-  scissors: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{width:20,height:20}}><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>,
-  chevL: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{width:14,height:14}}><polyline points="15 18 9 12 15 6"/></svg>,
-  chevR: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{width:14,height:14}}><polyline points="9 18 15 12 9 6"/></svg>,
-  check: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{width:16,height:16}}><polyline points="20 6 9 17 4 12"/></svg>,
-  alert: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{width:16,height:16}}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
+  dashboard: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ width: 16, height: 16 }}><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></svg>,
+  users: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ width: 16, height: 16 }}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></svg>,
+  history: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ width: 16, height: 16 }}><polyline points="12 8 12 12 14 14" /><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" /></svg>,
+  chart: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ width: 16, height: 16 }}><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></svg>,
+  whatsapp: () => <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 16, height: 16 }}><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" /></svg>,
+  plus: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 16, height: 16 }}><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>,
+  search: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 14, height: 14 }}><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>,
+  edit: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ width: 14, height: 14 }}><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>,
+  trash: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ width: 14, height: 14 }}><polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14H6L5 6" /><path d="M10 11v6M14 11v6M9 6V4h6v2" /></svg>,
+  x: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 18, height: 18 }}><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>,
+  logout: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ width: 16, height: 16 }}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>,
+  dollar: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ width: 20, height: 20 }}><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>,
+  scissors: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ width: 20, height: 20 }}><circle cx="6" cy="6" r="3" /><circle cx="6" cy="18" r="3" /><line x1="20" y1="4" x2="8.12" y2="15.88" /><line x1="14.47" y1="14.48" x2="20" y2="20" /><line x1="8.12" y1="8.12" x2="12" y2="12" /></svg>,
+  chevL: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 14, height: 14 }}><polyline points="15 18 9 12 15 6" /></svg>,
+  chevR: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 14, height: 14 }}><polyline points="9 18 15 12 9 6" /></svg>,
+  check: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ width: 16, height: 16 }}><polyline points="20 6 9 17 4 12" /></svg>,
+  alert: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 16, height: 16 }}><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>,
 }
 
 // ── Styles (CSS-in-JS via style tags) ────────────────────
@@ -171,7 +171,22 @@ const CSS = `
   .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
   .section-header h2{font-size:24px}
   .section-header p{font-size:13px;color:var(--dim);margin-top:2px}
-  @media(max-width:768px){.sidebar{display:none}.charts-grid{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}.stat-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:768px){
+  .app{flex-direction:column}
+  .sidebar{width:100%;height:56px;flex-direction:row;border-right:none;border-top:1px solid var(--border);position:fixed;bottom:0;left:0;right:0;z-index:50;order:2}
+  .sb-brand{display:none}
+  .sb-footer{display:none}
+  .sb-nav{display:flex;flex-direction:row;padding:4px 8px;overflow-x:auto;align-items:center;justify-content:space-around;gap:0}
+  .nav-item{flex-direction:column;gap:2px;padding:4px 6px;font-size:9px;min-width:56px;text-align:center;border-radius:6px;border:none;margin-bottom:0}
+  .nav-item span{font-size:9px;display:block}
+  .main{padding-bottom:56px;order:1}
+  .content{padding:16px}
+  .charts-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .stat-grid{grid-template-columns:repeat(2,1fr)}
+  .topbar{padding:0 16px}
+  .table-header{flex-direction:column;align-items:flex-start}
+}
 `
 
 // ── Chart components ──────────────────────────────────────
@@ -252,6 +267,7 @@ function VisitModal({ salonId, customers, visit, onClose, onSave, addToast }) {
     date: visit?.date || today(),
     payment_status: visit?.payment_status || 'paid',
     payment_method: visit?.payment_method || 'cash',
+    expiry: '',
   })
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
@@ -259,6 +275,8 @@ function VisitModal({ salonId, customers, visit, onClose, onSave, addToast }) {
     if (!form.service || !form.amount) { addToast('Fill all required fields', 'error'); return }
     if (!isNew && !form.customer_id) { addToast('Select a customer', 'error'); return }
     if (isNew && (!form.name || !form.mobile)) { addToast('Enter customer name and mobile', 'error'); return }
+    if (isNew && form.mobile.length !== 10) { addToast('Mobile number must be exactly 10 digits', 'error'); return }
+    if (isNew && !/^[0-9]{10}$/.test(form.mobile)) { addToast('Only digits allowed in mobile', 'error'); return }
     setLoading(true)
     try {
       let customerId = form.customer_id
@@ -266,7 +284,7 @@ function VisitModal({ salonId, customers, visit, onClose, onSave, addToast }) {
         const res = await fetch('/api/customers', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ salon_id: salonId, name: form.name, mobile: form.mobile })
+          body: JSON.stringify({ salon_id: salonId, name: form.name, mobile: form.mobile, ...(form.expiry && { expiry: form.expiry }) })
         })
         const nc = await res.json()
         customerId = nc.id
@@ -310,15 +328,15 @@ function VisitModal({ salonId, customers, visit, onClose, onSave, addToast }) {
           ) : (
             <div className="form-row">
               <div className="ig"><label>Name *</label><input placeholder="Full name" value={form.name} onChange={e => set('name', e.target.value)} /></div>
-              <div className="ig"><label>Mobile *</label><input 
-  placeholder="10-digit mobile"
-  value={form.mobile}
-  maxLength={10}
-  onChange={e => {
-    const val = e.target.value.replace(/[^0-9]/g, '') // sirf digits allow
-    set('mobile', val)
-  }}
-/></div>
+              <div className="ig"><label>Mobile *</label><input
+                placeholder="10-digit mobile"
+                value={form.mobile}
+                maxLength={10}
+                onChange={e => {
+                  const val = e.target.value.replace(/[^0-9]/g, '') // sirf digits allow
+                  set('mobile', val)
+                }}
+              /></div>
             </div>
           )}
           <div className="ig"><label>Services *</label><input placeholder="e.g. Haircut, Blow Dry" value={form.service} onChange={e => set('service', e.target.value)} /></div>
@@ -326,6 +344,19 @@ function VisitModal({ salonId, customers, visit, onClose, onSave, addToast }) {
             <div className="ig"><label>Amount (₹) *</label><input type="number" placeholder="0" value={form.amount} onChange={e => set('amount', e.target.value)} /></div>
             <div className="ig"><label>Visit Date *</label><input type="date" value={form.date} onChange={e => set('date', e.target.value)} /></div>
           </div>
+          {isNew && (
+            <div className="ig">
+              <label>Access Expiry (Optional)</label>
+              <input type="date" value={form.expiry || ''}
+                min={today()}
+                onChange={e => set('expiry', e.target.value)}
+                placeholder="Leave blank for no expiry"
+              />
+              <div style={{ fontSize: 11, color: 'var(--dim)', marginTop: 4 }}>
+                Set a date to auto-expire this customer's access
+              </div>
+            </div>
+          )}
           <div className="form-row">
             <div className="ig">
               <label>Payment Status</label>
@@ -424,9 +455,9 @@ function Customers({ salonId, addToast }) {
   const load = useCallback(() => {
     setLoading(true)
     fetch(`/api/customers?salon_id=${salonId}`)
-  .then(r => r.json())
-  .then(data => setCustomers(Array.isArray(data) ? data : []))
-  .finally(() => setLoading(false))
+      .then(r => r.json())
+      .then(data => setCustomers(Array.isArray(data) ? data : []))
+      .finally(() => setLoading(false))
   }, [salonId])
   useEffect(() => { load() }, [load])
 
@@ -469,6 +500,7 @@ function Customers({ salonId, addToast }) {
               <th>Last Service</th>
               <th onClick={() => sortBy('totalAmount')}>Total Spend {sort.key === 'totalAmount' ? (sort.dir === 1 ? '↑' : '↓') : ''}</th>
               <th onClick={() => sortBy('lastVisit')}>Last Visit {sort.key === 'lastVisit' ? (sort.dir === 1 ? '↑' : '↓') : ''}</th>
+              <th>Expiry</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -484,6 +516,13 @@ function Customers({ salonId, addToast }) {
                 <td style={{ color: 'var(--dim)', fontSize: 12 }}>{c.lastService || '—'}</td>
                 <td style={{ color: 'var(--gold)' }}>{fmt(c.totalAmount)}</td>
                 <td style={{ color: 'var(--dim)' }}>{c.lastVisit || '—'}</td>
+                <td>
+                  {c.expiry ? (
+                    <span className={`badge ${c.expiry < today() ? 'badge-red' : 'badge-green'}`}>
+                      {c.expiry < today() ? '⛔ Expired' : c.expiry}
+                    </span>
+                  ) : <span style={{ color: 'var(--dim)', fontSize: 12 }}>No limit</span>}
+                </td>
                 <td>
                   <div className="td-actions">
                     <button className="btn btn-danger btn-icon btn-sm" onClick={() => del(c.id)}><Icons.trash /></button>
@@ -535,10 +574,11 @@ function Visits({ salonId, addToast }) {
     Promise.all([
       fetch(`/api/visits?salon_id=${salonId}`).then(r => r.json()),
       fetch(`/api/customers?salon_id=${salonId}`).then(r => r.json())
-]).then(([v, c]) => {
-  setVisits(Array.isArray(v) ? v : [])
-  setCustomers(Array.isArray(c) ? c : [])
-}).finally(() => setLoading(false))  }, [salonId])
+    ]).then(([v, c]) => {
+      setVisits(Array.isArray(v) ? v : [])
+      setCustomers(Array.isArray(c) ? c : [])
+    }).finally(() => setLoading(false))
+  }, [salonId])
   useEffect(() => { load() }, [load])
 
   const filtered = visits
