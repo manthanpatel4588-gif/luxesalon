@@ -310,7 +310,15 @@ function VisitModal({ salonId, customers, visit, onClose, onSave, addToast }) {
           ) : (
             <div className="form-row">
               <div className="ig"><label>Name *</label><input placeholder="Full name" value={form.name} onChange={e => set('name', e.target.value)} /></div>
-              <div className="ig"><label>Mobile *</label><input placeholder="10-digit" value={form.mobile} onChange={e => set('mobile', e.target.value)} /></div>
+              <div className="ig"><label>Mobile *</label><input 
+  placeholder="10-digit mobile"
+  value={form.mobile}
+  maxLength={10}
+  onChange={e => {
+    const val = e.target.value.replace(/[^0-9]/g, '') // sirf digits allow
+    set('mobile', val)
+  }}
+/></div>
             </div>
           )}
           <div className="ig"><label>Services *</label><input placeholder="e.g. Haircut, Blow Dry" value={form.service} onChange={e => set('service', e.target.value)} /></div>
