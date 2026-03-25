@@ -171,16 +171,21 @@ const CSS = `
   .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
   .section-header h2{font-size:24px}
   .section-header p{font-size:13px;color:var(--dim);margin-top:2px}
-  @media (max-width: 768px) {
-  /* Layout Changes */
-  .app {
+@media (max-width: 768px) {
+  /* 1. Layout Fix: Main content ko bottom nav ke upar dhaklo */
+  .main {
+    padding-bottom: 80px !important; /* Navigation bar ki height se thoda zyada space */
+    order: 1;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
     flex-direction: column;
   }
 
-  /* Bottom Navigation Sidebar */
+  /* 2. Sidebar/Bottom Nav Fix: Isko top layer pe rakho */
   .sidebar {
     width: 100%;
-    height: 60px; /* Thoda height badhaya hai icons ke liye */
+    height: 65px; /* Thoda comfortable height */
     flex-direction: row;
     border-right: none;
     border-top: 1px solid var(--border);
@@ -188,111 +193,52 @@ const CSS = `
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 100;
-    order: 2;
-    background: var(--card-bg); /* Ensure background is visible */
+    z-index: 9999; /* Isse nav hamesha sabse upar rahega */
+    background: #111111; /* Ya jo aapka dark background color hai wo use karein */
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.5); /* Thoda shadow taaki content se alag dikhe */
   }
 
-  .sb-brand, .sb-footer {
-    display: none;
-  }
-
+  /* 3. Navigation Items Fix */
   .sb-nav {
     display: flex;
     flex-direction: row;
-    padding: 0 4px;
+    padding: 0 5px;
     width: 100%;
     justify-content: space-around;
     align-items: center;
-    gap: 0;
   }
 
   .nav-item {
+    flex: 1;
     flex-direction: column;
-    gap: 2px;
-    padding: 6px 2px;
+    gap: 4px;
+    padding: 8px 0;
     font-size: 10px;
-    min-width: 64px;
-    text-align: center;
-    border-radius: 8px;
-    border: none;
-    margin-bottom: 0;
     background: transparent;
-  }
-
-  .nav-item svg {
-    width: 20px;
-    height: 20px;
+    border: none;
   }
 
   .nav-item span {
     font-size: 9px;
-    display: block;
-    white-space: nowrap;
   }
 
-  /* Main Content Area */
-  .main {
-    padding-bottom: 70px; /* Sidebar ke liye space chhodi hai */
-    order: 1;
-    width: 100%;
-    overflow-x: hidden;
-  }
-
-  .content {
-    padding: 12px;
-  }
-
-  /* IMPORTANT: Table Fixing Code */
-  /* Is class ko apne table ke bahar wale div par lagayein */
-  .table-responsive, 
-  .table-container,
-  div[class*="table"] { 
-    width: 100%;
-    overflow-x: auto !important; /* Horizontal scroll enable karega */
-    display: block;
+  /* 4. Table Scroll Fix: Taaki table cut na ho */
+  .table-container, [class*="table-wrapper"] {
+    overflow-x: auto !important;
     -webkit-overflow-scrolling: touch;
-    border-radius: 8px;
+    margin-bottom: 20px;
+    width: 100%;
   }
 
   table {
-    min-width: 700px; /* Force table width taaki columns na kutein */
-    width: 100%;
-    border-collapse: collapse;
+    min-width: 600px; /* Horizontal scroll ke liye */
   }
 
-  th, td {
-    padding: 12px 8px !important;
-    font-size: 13px !important;
-    white-space: nowrap; /* Text ko wrap hone se rokega */
-  }
-
-  /* Grid & Forms */
-  .charts-grid, .form-row {
-    grid-template-columns: 1fr;
-  }
-
-  .stat-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-
-  .topbar {
-    padding: 0 12px;
-    height: 56px;
-  }
-
-  .table-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-  }
-  
-  .search-container {
-    width: 100%;
+  /* Brands aur footers ko mobile par chhupane ke liye */
+  .sb-brand, .sb-footer, .user-profile-mini {
+    display: none !important;
   }
 }
-`
 
 // ── Chart components ──────────────────────────────────────
 function BarChart({ data }) {
@@ -308,10 +254,10 @@ function BarChart({ data }) {
       },
       options: {
         responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `₹${c.raw.toLocaleString()}` } } },
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `₹${ c.raw.toLocaleString()}` } } },
         scales: {
           x: { grid: { color: 'rgba(201,168,76,0.08)' }, ticks: { color: '#9A9494' } },
-          y: { grid: { color: 'rgba(201,168,76,0.08)' }, ticks: { color: '#9A9494', callback: v => `₹${v / 1000}k` } }
+          y: { grid: { color: 'rgba(201,168,76,0.08)' }, ticks: { color: '#9A9494', callback: v => `₹${ v / 1000 } k` } }
         }
       }
     })
@@ -335,7 +281,7 @@ function DonutChart({ data }) {
         responsive: true, maintainAspectRatio: false,
         plugins: {
           legend: { position: 'bottom', labels: { color: '#9A9494', padding: 16, font: { size: 12 } } },
-          tooltip: { callbacks: { label: c => `₹${c.raw.toLocaleString()}` } }
+          tooltip: { callbacks: { label: c => `₹${ c.raw.toLocaleString() } ` } }
         },
         cutout: '65%'
       }
@@ -350,7 +296,7 @@ function Toasts({ toasts }) {
   return (
     <div className="toasts">
       {toasts.map(t => (
-        <div key={t.id} className={`toast ${t.type}`}>
+        <div key={t.id} className={`toast ${ t.type } `}>
           {t.type === 'success' ? <Icons.check /> : <Icons.alert />}
           <span>{t.message}</span>
         </div>
@@ -414,8 +360,8 @@ function VisitModal({ salonId, customers, visit, onClose, onSave, addToast }) {
         </div>
         <div className="modal-body">
           <div className="tab-bar">
-            <div className={`tab-item ${!isNew ? 'active' : ''}`} onClick={() => setIsNew(false)}>Existing Customer</div>
-            <div className={`tab-item ${isNew ? 'active' : ''}`} onClick={() => setIsNew(true)}>New Customer</div>
+            <div className={`tab - item ${ !isNew ? 'active' : '' } `} onClick={() => setIsNew(false)}>Existing Customer</div>
+            <div className={`tab - item ${ isNew ? 'active' : '' } `} onClick={() => setIsNew(true)}>New Customer</div>
           </div>
           {!isNew ? (
             <div className="ig">
@@ -485,7 +431,7 @@ function Dashboard({ salonId, onAddVisit }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch(`/api/dashboard?salon_id=${salonId}`)
+    fetch(`/ api / dashboard ? salon_id = ${ salonId } `)
       .then(r => r.json()).then(setData).finally(() => setLoading(false))
   }, [salonId])
 
@@ -498,10 +444,10 @@ function Dashboard({ salonId, onAddVisit }) {
   )
 
   const StatCard = ({ icon, label, value, color, delay }) => (
-    <div className="stat-card" style={{ animationDelay: `${delay}ms` }}>
+    <div className="stat-card" style={{ animationDelay: `${ delay } ms` }}>
       <div className="stat-icon">{icon}</div>
       <div className="stat-label">{label}</div>
-      <div className={`stat-value ${color || ''}`}>{value}</div>
+      <div className={`stat - value ${ color || '' } `}>{value}</div>
     </div>
   )
 
@@ -546,7 +492,7 @@ function Customers({ salonId, addToast }) {
 
   const load = useCallback(() => {
     setLoading(true)
-    fetch(`/api/customers?salon_id=${salonId}`)
+    fetch(`/ api / customers ? salon_id = ${ salonId } `)
       .then(r => r.json())
       .then(data => setCustomers(Array.isArray(data) ? data : []))
       .finally(() => setLoading(false))
@@ -562,7 +508,7 @@ function Customers({ salonId, addToast }) {
 
   const del = async id => {
     if (!confirm('Delete this customer?')) return
-    await fetch(`/api/customers?id=${id}`, { method: 'DELETE' })
+    await fetch(`/ api / customers ? id = ${ id } `, { method: 'DELETE' })
     addToast('Customer deleted', 'success'); load()
   }
 
@@ -624,7 +570,7 @@ function Customers({ salonId, addToast }) {
             <div className="pag-btns">
               <div className="pag-btn" onClick={() => page > 1 && setPage(p => p - 1)}><Icons.chevL /></div>
               {[...Array(Math.min(totalPages, 5))].map((_, i) => (
-                <div key={i} className={`pag-btn ${page === i + 1 ? 'active' : ''}`} onClick={() => setPage(i + 1)}>{i + 1}</div>
+                <div key={i} className={`pag - btn ${ page === i + 1 ? 'active' : '' } `} onClick={() => setPage(i + 1)}>{i + 1}</div>
               ))}
               <div className="pag-btn" onClick={() => page < totalPages && setPage(p => p + 1)}><Icons.chevR /></div>
             </div>
@@ -658,8 +604,8 @@ function Visits({ salonId, addToast }) {
   const load = useCallback(() => {
     setLoading(true)
     Promise.all([
-      fetch(`/api/visits?salon_id=${salonId}`).then(r => r.json()),
-      fetch(`/api/customers?salon_id=${salonId}`).then(r => r.json())
+      fetch(`/ api / visits ? salon_id = ${ salonId } `).then(r => r.json()),
+      fetch(`/ api / customers ? salon_id = ${ salonId } `).then(r => r.json())
     ]).then(([v, c]) => {
       setVisits(Array.isArray(v) ? v : [])
       setCustomers(Array.isArray(c) ? c : [])
@@ -677,14 +623,14 @@ function Visits({ salonId, addToast }) {
 
   const del = async id => {
     if (!confirm('Delete this visit?')) return
-    await fetch(`/api/visits?id=${id}`, { method: 'DELETE' })
+    await fetch(`/ api / visits ? id = ${ id } `, { method: 'DELETE' })
     addToast('Visit deleted', 'success'); load()
   }
 
   const sBadge = s => s === 'paid' ? <span className="badge badge-green">Paid</span> : <span className="badge badge-red">Pending</span>
   const mBadge = m => {
     const cls = { cash: 'badge-gold', upi: 'badge-blue', card: 'badge-blue', online: 'badge-blue' }
-    return <span className={`badge ${cls[m] || 'badge-gray'}`}>{m?.toUpperCase()}</span>
+    return <span className={`badge ${ cls[m] || 'badge-gray' } `}>{m?.toUpperCase()}</span>
   }
 
   return (
@@ -751,7 +697,7 @@ function Visits({ salonId, addToast }) {
             <div className="pag-btns">
               <div className="pag-btn" onClick={() => page > 1 && setPage(p => p - 1)}><Icons.chevL /></div>
               {[...Array(Math.min(totalPages, 5))].map((_, i) => (
-                <div key={i} className={`pag-btn ${page === i + 1 ? 'active' : ''}`} onClick={() => setPage(i + 1)}>{i + 1}</div>
+                <div key={i} className={`pag - btn ${ page === i + 1 ? 'active' : '' } `} onClick={() => setPage(i + 1)}>{i + 1}</div>
               ))}
               <div className="pag-btn" onClick={() => page < totalPages && setPage(p => p + 1)}><Icons.chevR /></div>
             </div>
@@ -789,7 +735,7 @@ function Reports({ salonId }) {
 
   const generate = async () => {
     setLoading(true)
-    const res = await fetch(`/api/reports?salon_id=${salonId}&start=${start}&end=${end}`)
+    const res = await fetch(`/ api / reports ? salon_id = ${ salonId }& start=${ start }& end=${ end } `)
     setData(await res.json())
     setLoading(false)
   }
@@ -859,33 +805,33 @@ function WhatsApp({ salonId }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch(`/api/whatsapp?salon_id=${salonId}`).then(r => r.json()).then(setCustomers).finally(() => setLoading(false))
+    fetch(`/ api / whatsapp ? salon_id = ${ salonId } `).then(r => r.json()).then(setCustomers).finally(() => setLoading(false))
   }, [salonId])
 
   const send = c => {
-    const msg = encodeURIComponent(`Hello ${c.name}, it's been a while since your last visit. We miss you! Please visit us again soon. 💇‍♀️✨`)
-    window.open(`https://wa.me/${c.mobile}?text=${msg}`, '_blank')
+    const msg = encodeURIComponent(`Hello ${ c.name }, it's been a while since your last visit. We miss you! Please visit us again soon. 💇‍♀️✨`)
+window.open(`https://wa.me/${c.mobile}?text=${msg}`, '_blank')
   }
 
-  return (
-    <div>
-      <div className="section-header"><div><h2>WhatsApp Reminders</h2><p>Customers who haven't visited in 30+ days</p></div></div>
-      <div className="notice">💡 <strong>Pro tip:</strong> Sending reminders to inactive customers brings them back. Click "Send Reminder" to open WhatsApp with a pre-filled message.</div>
-      {loading ? <div style={{ textAlign: 'center', padding: 40 }}><span className="spinner" /></div>
-        : customers.length === 0
-          ? <div className="wa-card" style={{ justifyContent: 'center' }}><p style={{ color: 'var(--green)' }}>✅ All customers visited recently. No reminders needed!</p></div>
-          : customers.map(c => (
-            <div key={c.id} className="wa-card">
-              <div>
-                <div style={{ fontWeight: 500, marginBottom: 4 }}>{c.name}</div>
-                <div style={{ fontSize: 12, color: 'var(--dim)' }}>📱 {c.mobile}</div>
-                <div style={{ fontSize: 12, color: 'var(--dim)', marginTop: 4 }}>Last visit: <span style={{ color: 'var(--red)' }}>{c.lastVisit}</span></div>
-              </div>
-              <button className="btn btn-green" onClick={() => send(c)}><Icons.whatsapp /> Send Reminder</button>
+return (
+  <div>
+    <div className="section-header"><div><h2>WhatsApp Reminders</h2><p>Customers who haven't visited in 30+ days</p></div></div>
+    <div className="notice">💡 <strong>Pro tip:</strong> Sending reminders to inactive customers brings them back. Click "Send Reminder" to open WhatsApp with a pre-filled message.</div>
+    {loading ? <div style={{ textAlign: 'center', padding: 40 }}><span className="spinner" /></div>
+      : customers.length === 0
+        ? <div className="wa-card" style={{ justifyContent: 'center' }}><p style={{ color: 'var(--green)' }}>✅ All customers visited recently. No reminders needed!</p></div>
+        : customers.map(c => (
+          <div key={c.id} className="wa-card">
+            <div>
+              <div style={{ fontWeight: 500, marginBottom: 4 }}>{c.name}</div>
+              <div style={{ fontSize: 12, color: 'var(--dim)' }}>📱 {c.mobile}</div>
+              <div style={{ fontSize: 12, color: 'var(--dim)', marginTop: 4 }}>Last visit: <span style={{ color: 'var(--red)' }}>{c.lastVisit}</span></div>
             </div>
-          ))}
-    </div>
-  )
+            <button className="btn btn-green" onClick={() => send(c)}><Icons.whatsapp /> Send Reminder</button>
+          </div>
+        ))}
+  </div>
+)
 }
 
 // ── Sidebar ───────────────────────────────────────────────
