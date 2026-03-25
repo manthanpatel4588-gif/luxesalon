@@ -172,20 +172,15 @@ const CSS = `
   .section-header h2{font-size:24px}
   .section-header p{font-size:13px;color:var(--dim);margin-top:2px}
   @media (max-width: 768px) {
-  /* 1. Layout Fix: Main content ko bottom nav ke upar dhaklo */
-  .main {
-    padding-bottom: 80px !important; /* Navigation bar ki height se thoda zyada space */
-    order: 1;
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
+  /* Layout Changes */
+  .app {
     flex-direction: column;
   }
 
-  /* 2. Sidebar/Bottom Nav Fix: Isko top layer pe rakho */
+  /* Bottom Navigation Sidebar */
   .sidebar {
     width: 100%;
-    height: 65px; /* Thoda comfortable height */
+    height: 60px; /* Thoda height badhaya hai icons ke liye */
     flex-direction: row;
     border-right: none;
     border-top: 1px solid var(--border);
@@ -193,50 +188,108 @@ const CSS = `
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 9999; /* Isse nav hamesha sabse upar rahega */
-    background: #111111; /* Ya jo aapka dark background color hai wo use karein */
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.5); /* Thoda shadow taaki content se alag dikhe */
+    z-index: 100;
+    order: 2;
+    background: var(--card-bg); /* Ensure background is visible */
   }
 
-  /* 3. Navigation Items Fix */
+  .sb-brand, .sb-footer {
+    display: none;
+  }
+
   .sb-nav {
     display: flex;
     flex-direction: row;
-    padding: 0 5px;
+    padding: 0 4px;
     width: 100%;
     justify-content: space-around;
     align-items: center;
+    gap: 0;
   }
 
   .nav-item {
-    flex: 1;
     flex-direction: column;
-    gap: 4px;
-    padding: 8px 0;
+    gap: 2px;
+    padding: 6px 2px;
     font-size: 10px;
-    background: transparent;
+    min-width: 64px;
+    text-align: center;
+    border-radius: 8px;
     border: none;
+    margin-bottom: 0;
+    background: transparent;
+  }
+
+  .nav-item svg {
+    width: 20px;
+    height: 20px;
   }
 
   .nav-item span {
     font-size: 9px;
+    display: block;
+    white-space: nowrap;
   }
 
-  /* 4. Table Scroll Fix: Taaki table cut na ho */
-  .table-container, [class*="table-wrapper"] {
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch;
-    margin-bottom: 20px;
+  /* Main Content Area */
+  .main {
+    padding-bottom: 70px; /* Sidebar ke liye space chhodi hai */
+    order: 1;
     width: 100%;
+    overflow-x: hidden;
+  }
+
+  .content {
+    padding: 12px;
+  }
+
+  /* IMPORTANT: Table Fixing Code */
+  /* Is class ko apne table ke bahar wale div par lagayein */
+  .table-responsive, 
+  .table-container,
+  div[class*="table"] { 
+    width: 100%;
+    overflow-x: auto !important; /* Horizontal scroll enable karega */
+    display: block;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
   }
 
   table {
-    min-width: 600px; /* Horizontal scroll ke liye */
+    min-width: 700px; /* Force table width taaki columns na kutein */
+    width: 100%;
+    border-collapse: collapse;
   }
 
-  /* Brands aur footers ko mobile par chhupane ke liye */
-  .sb-brand, .sb-footer, .user-profile-mini {
-    display: none !important;
+  th, td {
+    padding: 12px 8px !important;
+    font-size: 13px !important;
+    white-space: nowrap; /* Text ko wrap hone se rokega */
+  }
+
+  /* Grid & Forms */
+  .charts-grid, .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .topbar {
+    padding: 0 12px;
+    height: 56px;
+  }
+
+  .table-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .search-container {
+    width: 100%;
   }
 }
 
