@@ -171,7 +171,7 @@ const CSS = `
   .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
   .section-header h2{font-size:24px}
   .section-header p{font-size:13px;color:var(--dim);margin-top:2px}
-@media (max-width: 768px) {
+  @media (max-width: 768px) {
   /* 1. Layout Fix: Main content ko bottom nav ke upar dhaklo */
   .main {
     padding-bottom: 80px !important; /* Navigation bar ki height se thoda zyada space */
