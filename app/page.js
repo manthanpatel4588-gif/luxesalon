@@ -171,21 +171,126 @@ const CSS = `
   .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
   .section-header h2{font-size:24px}
   .section-header p{font-size:13px;color:var(--dim);margin-top:2px}
-  @media(max-width:768px){
-  .app{flex-direction:column}
-  .sidebar{width:100%;height:56px;flex-direction:row;border-right:none;border-top:1px solid var(--border);position:fixed;bottom:0;left:0;right:0;z-index:50;order:2}
-  .sb-brand{display:none}
-  .sb-footer{display:none}
-  .sb-nav{display:flex;flex-direction:row;padding:4px 8px;overflow-x:auto;align-items:center;justify-content:space-around;gap:0}
-  .nav-item{flex-direction:column;gap:2px;padding:4px 6px;font-size:9px;min-width:56px;text-align:center;border-radius:6px;border:none;margin-bottom:0}
-  .nav-item span{font-size:9px;display:block}
-  .main{padding-bottom:56px;order:1}
-  .content{padding:16px}
-  .charts-grid{grid-template-columns:1fr}
-  .form-row{grid-template-columns:1fr}
-  .stat-grid{grid-template-columns:repeat(2,1fr)}
-  .topbar{padding:0 16px}
-  .table-header{flex-direction:column;align-items:flex-start}
+  @media (max-width: 768px) {
+  /* Layout Changes */
+  .app {
+    flex-direction: column;
+  }
+
+  /* Bottom Navigation Sidebar */
+  .sidebar {
+    width: 100%;
+    height: 60px; /* Thoda height badhaya hai icons ke liye */
+    flex-direction: row;
+    border-right: none;
+    border-top: 1px solid var(--border);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    order: 2;
+    background: var(--card-bg); /* Ensure background is visible */
+  }
+
+  .sb-brand, .sb-footer {
+    display: none;
+  }
+
+  .sb-nav {
+    display: flex;
+    flex-direction: row;
+    padding: 0 4px;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    gap: 0;
+  }
+
+  .nav-item {
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 2px;
+    font-size: 10px;
+    min-width: 64px;
+    text-align: center;
+    border-radius: 8px;
+    border: none;
+    margin-bottom: 0;
+    background: transparent;
+  }
+
+  .nav-item svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .nav-item span {
+    font-size: 9px;
+    display: block;
+    white-space: nowrap;
+  }
+
+  /* Main Content Area */
+  .main {
+    padding-bottom: 70px; /* Sidebar ke liye space chhodi hai */
+    order: 1;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .content {
+    padding: 12px;
+  }
+
+  /* IMPORTANT: Table Fixing Code */
+  /* Is class ko apne table ke bahar wale div par lagayein */
+  .table-responsive, 
+  .table-container,
+  div[class*="table"] { 
+    width: 100%;
+    overflow-x: auto !important; /* Horizontal scroll enable karega */
+    display: block;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+  }
+
+  table {
+    min-width: 700px; /* Force table width taaki columns na kutein */
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    padding: 12px 8px !important;
+    font-size: 13px !important;
+    white-space: nowrap; /* Text ko wrap hone se rokega */
+  }
+
+  /* Grid & Forms */
+  .charts-grid, .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .topbar {
+    padding: 0 12px;
+    height: 56px;
+  }
+
+  .table-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .search-container {
+    width: 100%;
+  }
 }
 `
 
@@ -343,7 +448,7 @@ function VisitModal({ salonId, customers, visit, onClose, onSave, addToast }) {
             <div className="ig"><label>Amount (₹) *</label><input type="number" placeholder="0" value={form.amount} onChange={e => set('amount', e.target.value)} /></div>
             <div className="ig"><label>Visit Date *</label><input type="date" value={form.date} onChange={e => set('date', e.target.value)} /></div>
           </div>
-          
+
           <div className="form-row">
             <div className="ig">
               <label>Payment Status</label>
@@ -487,7 +592,7 @@ function Customers({ salonId, addToast }) {
               <th>Last Service</th>
               <th onClick={() => sortBy('totalAmount')}>Total Spend {sort.key === 'totalAmount' ? (sort.dir === 1 ? '↑' : '↓') : ''}</th>
               <th onClick={() => sortBy('lastVisit')}>Last Visit {sort.key === 'lastVisit' ? (sort.dir === 1 ? '↑' : '↓') : ''}</th>
-              
+
               <th>Actions</th>
             </tr>
           </thead>
@@ -503,7 +608,7 @@ function Customers({ salonId, addToast }) {
                 <td style={{ color: 'var(--dim)', fontSize: 12 }}>{c.lastService || '—'}</td>
                 <td style={{ color: 'var(--gold)' }}>{fmt(c.totalAmount)}</td>
                 <td style={{ color: 'var(--dim)' }}>{c.lastVisit || '—'}</td>
-               
+
                 <td>
                   <div className="td-actions">
                     <button className="btn btn-danger btn-icon btn-sm" onClick={() => del(c.id)}><Icons.trash /></button>
