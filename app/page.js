@@ -267,7 +267,6 @@ function VisitModal({ salonId, customers, visit, onClose, onSave, addToast }) {
     date: visit?.date || today(),
     payment_status: visit?.payment_status || 'paid',
     payment_method: visit?.payment_method || 'cash',
-    expiry: '',
   })
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
@@ -284,7 +283,7 @@ function VisitModal({ salonId, customers, visit, onClose, onSave, addToast }) {
         const res = await fetch('/api/customers', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ salon_id: salonId, name: form.name, mobile: form.mobile, ...(form.expiry && { expiry: form.expiry }) })
+          body: JSON.stringify({ salon_id: salonId, name: form.name, mobile: form.mobile })
         })
         const nc = await res.json()
         customerId = nc.id
@@ -344,19 +343,7 @@ function VisitModal({ salonId, customers, visit, onClose, onSave, addToast }) {
             <div className="ig"><label>Amount (₹) *</label><input type="number" placeholder="0" value={form.amount} onChange={e => set('amount', e.target.value)} /></div>
             <div className="ig"><label>Visit Date *</label><input type="date" value={form.date} onChange={e => set('date', e.target.value)} /></div>
           </div>
-          {isNew && (
-            <div className="ig">
-              <label>Access Expiry (Optional)</label>
-              <input type="date" value={form.expiry || ''}
-                min={today()}
-                onChange={e => set('expiry', e.target.value)}
-                placeholder="Leave blank for no expiry"
-              />
-              <div style={{ fontSize: 11, color: 'var(--dim)', marginTop: 4 }}>
-                Set a date to auto-expire this customer's access
-              </div>
-            </div>
-          )}
+          
           <div className="form-row">
             <div className="ig">
               <label>Payment Status</label>
@@ -500,7 +487,7 @@ function Customers({ salonId, addToast }) {
               <th>Last Service</th>
               <th onClick={() => sortBy('totalAmount')}>Total Spend {sort.key === 'totalAmount' ? (sort.dir === 1 ? '↑' : '↓') : ''}</th>
               <th onClick={() => sortBy('lastVisit')}>Last Visit {sort.key === 'lastVisit' ? (sort.dir === 1 ? '↑' : '↓') : ''}</th>
-              <th>Expiry</th>
+              
               <th>Actions</th>
             </tr>
           </thead>
@@ -516,13 +503,7 @@ function Customers({ salonId, addToast }) {
                 <td style={{ color: 'var(--dim)', fontSize: 12 }}>{c.lastService || '—'}</td>
                 <td style={{ color: 'var(--gold)' }}>{fmt(c.totalAmount)}</td>
                 <td style={{ color: 'var(--dim)' }}>{c.lastVisit || '—'}</td>
-                <td>
-                  {c.expiry ? (
-                    <span className={`badge ${c.expiry < today() ? 'badge-red' : 'badge-green'}`}>
-                      {c.expiry < today() ? '⛔ Expired' : c.expiry}
-                    </span>
-                  ) : <span style={{ color: 'var(--dim)', fontSize: 12 }}>No limit</span>}
-                </td>
+               
                 <td>
                   <div className="td-actions">
                     <button className="btn btn-danger btn-icon btn-sm" onClick={() => del(c.id)}><Icons.trash /></button>
