@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 
 export async function GET(req) {
   const salonId = req.nextUrl.searchParams.get('salon_id')
+  if (!salonId) return NextResponse.json([], { status: 200 })
   const { data, error } = await supabase
     .from('visits')
     .select('*, customers(name, mobile)')

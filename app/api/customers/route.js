@@ -3,11 +3,16 @@ import { NextResponse } from 'next/server'
 
 export async function GET(req) {
   const salonId = req.nextUrl.searchParams.get('salon_id')
+  
+  // ✅ Add this check
+  if (!salonId) return NextResponse.json([], { status: 200 })
+  
   const { data, error } = await supabase
     .from('customers')
     .select('*, visits(*)')
     .eq('salon_id', salonId)
   if (error) return NextResponse.json({ error }, { status: 500 })
+  // ...rest same
 
   // Process: add lastVisit, lastService, totalAmount
   const processed = data.map(c => {
