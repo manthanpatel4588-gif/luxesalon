@@ -415,7 +415,10 @@ function Customers({ salonId, addToast }) {
 
   const load = useCallback(() => {
     setLoading(true)
-    fetch(`/api/customers?salon_id=${salonId}`).then(r => r.json()).then(setCustomers).finally(() => setLoading(false))
+    fetch(`/api/customers?salon_id=${salonId}`)
+  .then(r => r.json())
+  .then(data => setCustomers(Array.isArray(data) ? data : []))
+  .finally(() => setLoading(false))
   }, [salonId])
   useEffect(() => { load() }, [load])
 
@@ -524,8 +527,10 @@ function Visits({ salonId, addToast }) {
     Promise.all([
       fetch(`/api/visits?salon_id=${salonId}`).then(r => r.json()),
       fetch(`/api/customers?salon_id=${salonId}`).then(r => r.json())
-    ]).then(([v, c]) => { setVisits(v); setCustomers(c) }).finally(() => setLoading(false))
-  }, [salonId])
+]).then(([v, c]) => {
+  setVisits(Array.isArray(v) ? v : [])
+  setCustomers(Array.isArray(c) ? c : [])
+}).finally(() => setLoading(false))  }, [salonId])
   useEffect(() => { load() }, [load])
 
   const filtered = visits

@@ -4,6 +4,8 @@ import { NextResponse } from 'next/server'
 export async function POST(req) {
   try {
     const { email, password } = await req.json();
+    
+    console.log('Login attempt:', email); // DEBUG
 
     const { data: user, error } = await supabase
       .from('users')
@@ -11,9 +13,14 @@ export async function POST(req) {
       .eq('email', email)
       .single();
 
+    console.log('User found:', user);  // DEBUG
+    console.log('Error:', error);      // DEBUG
+
     if (error || !user) {
       return NextResponse.json({ error: 'User not found', debug: error?.message }, { status: 401 });
     }
+
+    console.log('DB password:', user.password, '| Input password:', password); // DEBUG
 
     if (user.password !== password) {
       return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
@@ -30,17 +37,12 @@ export async function POST(req) {
     }
 
     return NextResponse.json({ 
-      user: { 
-        id: user.id, 
-        email: user.email, 
-        name: user.name, 
-        role: user.role, 
-        salon_id: user.salons?.id || user.salon_id   // ✅ THIS WAS MISSING
-      },
+      user: { id: user.id, email: user.email, name: user.name, role: user.role },
       salon: user.salons 
     });
 
   } catch (err) {
+    console.log('Server error:', err); // DEBUG
     return NextResponse.json({ error: 'Server error', debug: err.message }, { status: 500 });
   }
 }
