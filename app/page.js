@@ -446,8 +446,10 @@ function Customers({ salonId, addToast }) {
         <div><h2>Customers</h2><p>{filtered.length} total customers</p></div>
         <button className="btn btn-primary" onClick={() => setShowModal(true)}><Icons.plus /> Add Visit</button>
       </div>
-      <div className="table-wrap">
-        <div className="table-header">
+        
+      <div className="table-wrap" style={{minWidth:600}}>
+        <div style={{width:'100%',overflowX:'auto',WebkitOverflowScrolling:'touch'}}
+></div>        <div className="table-header">
           <h3>Customer List</h3>
           <div className="search-row">
             <div className="search-wrap">
