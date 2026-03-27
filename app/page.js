@@ -152,9 +152,9 @@ const CSS = `
     .nav-item{flex-direction:column;gap:2px;padding:6px 2px;font-size:10px;min-width:60px;text-align:center;border-radius:8px;border:none;margin-bottom:0;background:transparent}
     .nav-item svg{width:20px;height:20px}
     .nav-item span{font-size:9px;display:block;white-space:nowrap}
-    .main{padding-bottom:70px;order:1;width:100%;overflow-x:hidden}
+    .main{padding-bottom:100px;order:1;width:100%;overflow-x:hidden}
     .content{padding:12px}
-    .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom: 20px;}
     table{min-width:600px}
     th,td{padding:10px 8px;font-size:12px;white-space:nowrap}
     .charts-grid,.form-row{grid-template-columns:1fr}
