@@ -961,40 +961,36 @@ export default function App() {
 
   // Check saved auth + verify status on load
   useEffect(() => {
-    const saved = localStorage.getItem('luxe_auth')
-    if (!saved) return
-    try {
-      const parsed = JSON.parse(saved)
-      // Re-verify with server
-      fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: parsed.user?.email,
-          password: parsed.user?.password_plain || ''
-        })
-      }).catch(() => { })
-      setAuth(parsed)
+  const saved = localStorage.getItem('luxe_auth')
+  if (!saved) return
+  try {
+    const parsed = JSON.parse(saved)
 
-      // Check every 30 seconds if account still active
-      const interval = setInterval(async () => {
-        const res = await fetch(`/api/auth/verify?salon_id=${parsed.user?.salon_id}`)
+    const verify = async () => {
+      try {
+        const res = await fetch('/api/auth/verify?salon_id=' + (parsed.user?.salon_id || ''))
         if (!res.ok) {
           localStorage.removeItem('luxe_auth')
           setAuth(null)
+        } else {
+          setAuth(parsed)
         }
-      }, 30000)
-      return () => clearInterval(interval)
-    } catch {
-      localStorage.removeItem('luxe_auth')
+      } catch {
+        setAuth(parsed)
+      }
     }
-  }, [])
 
-  const addToast = useCallback((message, type = 'success') => {
-    const id = Date.now()
-    setToasts(t => [...t, { id, message, type }])
-    setTimeout(() => setToasts(t => t.filter(x => x.id !== id)), 3500)
-  }, [])
+    // Turant verify karo
+    verify()
+
+    // Har 10 second mein check karo
+    const interval = setInterval(verify, 10000)
+    return () => clearInterval(interval)
+
+  } catch {
+    localStorage.removeItem('luxe_auth')
+  }
+}, [])
 
   const handleLogout = () => { localStorage.removeItem('luxe_auth'); setAuth(null) }
 

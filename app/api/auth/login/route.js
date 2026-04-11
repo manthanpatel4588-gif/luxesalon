@@ -23,24 +23,23 @@ export async function POST(req) {
 
     // 3. Owner ke liye salon status + expiry check
     if (user.role === 'owner') {
-      
+
       // Salon exist karta hai?
       if (!user.salons) {
         return NextResponse.json({ error: 'No salon linked to this account' }, { status: 403 })
       }
 
       // Salon inactive hai?
-      if (user.salons.status === 'inactive') {
+       if (user.salons.status === 'inactive') {
         return NextResponse.json({ 
-          error: 'Your account has been deactivated. Please contact admin.' 
+          error: '⛔ Your account has been deactivated. Please contact admin to reactivate.'
         }, { status: 403 })
       }
 
-      // License expired hai?
       const today = new Date().toISOString().split('T')[0]
       if (user.salons.expiry < today) {
         return NextResponse.json({ 
-          error: 'Your license has expired. Please renew to continue.' 
+          error: '⏰ Your license has expired. Please renew your plan to continue.'
         }, { status: 403 })
       }
     }
