@@ -514,4 +514,4 @@ export default function AdminPage() {
       onLogout={() => { localStorage.removeItem('luxe_admin_auth'); setAuth(null) }}
     />
   )
-}
+} 

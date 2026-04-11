@@ -5,23 +5,23 @@ const fmt = n => `₹${Number(n || 0).toLocaleString('en-IN')}`
 const today = () => new Date().toISOString().split('T')[0]
 
 const Icons = {
-  dashboard: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{width:16,height:16}}><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>,
-  users: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{width:16,height:16}}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
-  history: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{width:16,height:16}}><polyline points="12 8 12 12 14 14"/><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"/></svg>,
-  chart: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{width:16,height:16}}><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
-  whatsapp: () => <svg viewBox="0 0 24 24" fill="currentColor" style={{width:16,height:16}}><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>,
-  plus: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{width:16,height:16}}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
-  search: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{width:14,height:14}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
-  edit: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{width:14,height:14}}><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>,
-  trash: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{width:14,height:14}}><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>,
-  x: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{width:18,height:18}}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-  logout: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{width:16,height:16}}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>,
-  dollar: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{width:20,height:20}}><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
-  scissors: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{width:20,height:20}}><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>,
-  chevL: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{width:14,height:14}}><polyline points="15 18 9 12 15 6"/></svg>,
-  chevR: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{width:14,height:14}}><polyline points="9 18 15 12 9 6"/></svg>,
-  check: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{width:16,height:16}}><polyline points="20 6 9 17 4 12"/></svg>,
-  alert: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{width:16,height:16}}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
+  dashboard: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ width: 16, height: 16 }}><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></svg>,
+  users: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ width: 16, height: 16 }}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></svg>,
+  history: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ width: 16, height: 16 }}><polyline points="12 8 12 12 14 14" /><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" /></svg>,
+  chart: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ width: 16, height: 16 }}><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></svg>,
+  whatsapp: () => <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 16, height: 16 }}><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" /></svg>,
+  plus: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 16, height: 16 }}><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>,
+  search: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 14, height: 14 }}><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>,
+  edit: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ width: 14, height: 14 }}><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>,
+  trash: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ width: 14, height: 14 }}><polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14H6L5 6" /><path d="M10 11v6M14 11v6M9 6V4h6v2" /></svg>,
+  x: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 18, height: 18 }}><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>,
+  logout: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ width: 16, height: 16 }}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>,
+  dollar: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ width: 20, height: 20 }}><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>,
+  scissors: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ width: 20, height: 20 }}><circle cx="6" cy="6" r="3" /><circle cx="6" cy="18" r="3" /><line x1="20" y1="4" x2="8.12" y2="15.88" /><line x1="14.47" y1="14.48" x2="20" y2="20" /><line x1="8.12" y1="8.12" x2="12" y2="12" /></svg>,
+  chevL: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 14, height: 14 }}><polyline points="15 18 9 12 15 6" /></svg>,
+  chevR: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 14, height: 14 }}><polyline points="9 18 15 12 9 6" /></svg>,
+  check: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ width: 16, height: 16 }}><polyline points="20 6 9 17 4 12" /></svg>,
+  alert: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 16, height: 16 }}><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>,
 }
 
 const CSS = `
@@ -181,7 +181,7 @@ function BarChart({ data }) {
         plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `₹${c.raw.toLocaleString()}` } } },
         scales: {
           x: { grid: { color: 'rgba(201,168,76,0.08)' }, ticks: { color: '#9A9494' } },
-          y: { grid: { color: 'rgba(201,168,76,0.08)' }, ticks: { color: '#9A9494', callback: v => `₹${v/1000}k` } }
+          y: { grid: { color: 'rgba(201,168,76,0.08)' }, ticks: { color: '#9A9494', callback: v => `₹${v / 1000}k` } }
         }
       }
     })
@@ -366,14 +366,14 @@ function Dashboard({ salonId, onAddVisit }) {
   if (loading) return (
     <div>
       <div className="stat-grid">{[...Array(7)].map((_, i) => (
-        <div key={i} className="stat-card"><div className="sk" style={{height:20,marginBottom:12}} /><div className="sk" style={{height:36,width:'60%'}} /></div>
+        <div key={i} className="stat-card"><div className="sk" style={{ height: 20, marginBottom: 12 }} /><div className="sk" style={{ height: 36, width: '60%' }} /></div>
       ))}</div>
     </div>
   )
   if (!data) return null
 
   const StatCard = ({ icon, label, value, color, delay }) => (
-    <div className="stat-card" style={{animationDelay:`${delay}ms`}}>
+    <div className="stat-card" style={{ animationDelay: `${delay}ms` }}>
       <div className="stat-icon">{icon}</div>
       <div className="stat-label">{label}</div>
       <div className={`stat-value ${color || ''}`}>{value}</div>
@@ -398,11 +398,11 @@ function Dashboard({ salonId, onAddVisit }) {
       <div className="charts-grid">
         <div className="chart-card">
           <h3>Monthly Income</h3>
-          <div style={{height:220}}><BarChart data={data.monthlyData || []} /></div>
+          <div style={{ height: 220 }}><BarChart data={data.monthlyData || []} /></div>
         </div>
         <div className="chart-card">
           <h3>Payment Breakdown</h3>
-          <div style={{height:220}}><DonutChart data={data.paymentBreakdown || {cash:0,online:0,pending:0}} /></div>
+          <div style={{ height: 220 }}><DonutChart data={data.paymentBreakdown || { cash: 0, online: 0, pending: 0 }} /></div>
         </div>
       </div>
     </div>
@@ -429,9 +429,9 @@ function Customers({ salonId, addToast }) {
 
   const filtered = customers
     .filter(c => !search || c.name?.toLowerCase().includes(search.toLowerCase()) || c.mobile?.includes(search))
-    .sort((a, b) => { const v = (a[sort.key]||'') < (b[sort.key]||'') ? -1 : 1; return v * sort.dir })
+    .sort((a, b) => { const v = (a[sort.key] || '') < (b[sort.key] || '') ? -1 : 1; return v * sort.dir })
 
-  const paged = filtered.slice((page-1)*PER, page*PER)
+  const paged = filtered.slice((page - 1) * PER, page * PER)
   const totalPages = Math.ceil(filtered.length / PER)
   const del = async id => {
     if (!confirm('Delete this customer?')) return
@@ -446,41 +446,41 @@ function Customers({ salonId, addToast }) {
         <div><h2>Customers</h2><p>{filtered.length} total customers</p></div>
         <button className="btn btn-primary" onClick={() => setShowModal(true)}><Icons.plus /> Add Visit</button>
       </div>
-        
-      <div className="table-wrap" style={{minWidth:600}}>
-        <div style={{width:'100%',overflowX:'auto',WebkitOverflowScrolling:'touch'}}
-></div>        <div className="table-header">
+
+      <div className="table-wrap" style={{ minWidth: 600 }}>
+        <div style={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}
+        ></div>        <div className="table-header">
           <h3>Customer List</h3>
           <div className="search-row">
             <div className="search-wrap">
               <Icons.search />
-              <input style={{width:200}} placeholder="Search name or mobile..." value={search} onChange={e => { setSearch(e.target.value); setPage(1) }} />
+              <input style={{ width: 200 }} placeholder="Search name or mobile..." value={search} onChange={e => { setSearch(e.target.value); setPage(1) }} />
             </div>
           </div>
         </div>
         <table>
           <thead>
             <tr>
-              <th onClick={() => sortBy('name')}>Name {sort.key==='name'?(sort.dir===1?'↑':'↓'):''}</th>
+              <th onClick={() => sortBy('name')}>Name {sort.key === 'name' ? (sort.dir === 1 ? '↑' : '↓') : ''}</th>
               <th>Mobile</th>
               <th>Last Service</th>
-              <th onClick={() => sortBy('totalAmount')}>Total Spend {sort.key==='totalAmount'?(sort.dir===1?'↑':'↓'):''}</th>
-              <th onClick={() => sortBy('lastVisit')}>Last Visit {sort.key==='lastVisit'?(sort.dir===1?'↑':'↓'):''}</th>
+              <th onClick={() => sortBy('totalAmount')}>Total Spend {sort.key === 'totalAmount' ? (sort.dir === 1 ? '↑' : '↓') : ''}</th>
+              <th onClick={() => sortBy('lastVisit')}>Last Visit {sort.key === 'lastVisit' ? (sort.dir === 1 ? '↑' : '↓') : ''}</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {loading ? [...Array(5)].map((_, i) => (
-              <tr key={i}>{[...Array(6)].map((_, j) => <td key={j}><div className="sk" style={{height:14}} /></td>)}</tr>
+              <tr key={i}>{[...Array(6)].map((_, j) => <td key={j}><div className="sk" style={{ height: 14 }} /></td>)}</tr>
             )) : paged.length === 0 ? (
               <tr><td colSpan={6}><div className="empty"><p>No customers found</p></div></td></tr>
             ) : paged.map(c => (
               <tr key={c.id}>
                 <td><strong>{c.name}</strong></td>
-                <td style={{color:'var(--dim)'}}>{c.mobile}</td>
-                <td style={{color:'var(--dim)',fontSize:12}}>{c.lastService || '—'}</td>
-                <td style={{color:'var(--gold)'}}>{fmt(c.totalAmount)}</td>
-                <td style={{color:'var(--dim)'}}>{c.lastVisit || '—'}</td>
+                <td style={{ color: 'var(--dim)' }}>{c.mobile}</td>
+                <td style={{ color: 'var(--dim)', fontSize: 12 }}>{c.lastService || '—'}</td>
+                <td style={{ color: 'var(--gold)' }}>{fmt(c.totalAmount)}</td>
+                <td style={{ color: 'var(--dim)' }}>{c.lastVisit || '—'}</td>
                 <td>
                   <div className="td-actions">
                     <button className="btn btn-danger btn-icon btn-sm" onClick={() => del(c.id)}><Icons.trash /></button>
@@ -492,13 +492,13 @@ function Customers({ salonId, addToast }) {
         </table>
         {totalPages > 1 && (
           <div className="pagination">
-            <span className="pag-info">Showing {(page-1)*PER+1}–{Math.min(page*PER,filtered.length)} of {filtered.length}</span>
+            <span className="pag-info">Showing {(page - 1) * PER + 1}–{Math.min(page * PER, filtered.length)} of {filtered.length}</span>
             <div className="pag-btns">
-              <div className="pag-btn" onClick={() => page > 1 && setPage(p => p-1)}><Icons.chevL /></div>
-              {[...Array(Math.min(totalPages,5))].map((_, i) => (
-                <div key={i} className={`pag-btn ${page===i+1?'active':''}`} onClick={() => setPage(i+1)}>{i+1}</div>
+              <div className="pag-btn" onClick={() => page > 1 && setPage(p => p - 1)}><Icons.chevL /></div>
+              {[...Array(Math.min(totalPages, 5))].map((_, i) => (
+                <div key={i} className={`pag-btn ${page === i + 1 ? 'active' : ''}`} onClick={() => setPage(i + 1)}>{i + 1}</div>
               ))}
-              <div className="pag-btn" onClick={() => page < totalPages && setPage(p => p+1)}><Icons.chevR /></div>
+              <div className="pag-btn" onClick={() => page < totalPages && setPage(p => p + 1)}><Icons.chevR /></div>
             </div>
           </div>
         )}
@@ -543,7 +543,7 @@ function Visits({ salonId, addToast }) {
     .filter(v => filterStatus === 'all' || v.payment_status === filterStatus)
     .filter(v => filterMethod === 'all' || v.payment_method === filterMethod)
 
-  const paged = filtered.slice((page-1)*PER, page*PER)
+  const paged = filtered.slice((page - 1) * PER, page * PER)
   const totalPages = Math.ceil(filtered.length / PER)
 
   const del = async id => {
@@ -554,8 +554,8 @@ function Visits({ salonId, addToast }) {
 
   const sBadge = s => s === 'paid' ? <span className="badge badge-green">Paid</span> : <span className="badge badge-red">Pending</span>
   const mBadge = m => {
-    const cls = { cash:'badge-gold', upi:'badge-blue', card:'badge-blue', online:'badge-blue' }
-    return <span className={`badge ${cls[m]||'badge-gray'}`}>{m?.toUpperCase()}</span>
+    const cls = { cash: 'badge-gold', upi: 'badge-blue', card: 'badge-blue', online: 'badge-blue' }
+    return <span className={`badge ${cls[m] || 'badge-gray'}`}>{m?.toUpperCase()}</span>
   }
 
   return (
@@ -570,14 +570,14 @@ function Visits({ salonId, addToast }) {
           <div className="search-row">
             <div className="search-wrap">
               <Icons.search />
-              <input style={{width:180}} placeholder="Search..." value={search} onChange={e => { setSearch(e.target.value); setPage(1) }} />
+              <input style={{ width: 180 }} placeholder="Search..." value={search} onChange={e => { setSearch(e.target.value); setPage(1) }} />
             </div>
-            <select style={{width:130}} value={filterStatus} onChange={e => { setFilterStatus(e.target.value); setPage(1) }}>
+            <select style={{ width: 130 }} value={filterStatus} onChange={e => { setFilterStatus(e.target.value); setPage(1) }}>
               <option value="all">All Status</option>
               <option value="paid">Paid</option>
               <option value="pending">Pending</option>
             </select>
-            <select style={{width:130}} value={filterMethod} onChange={e => { setFilterMethod(e.target.value); setPage(1) }}>
+            <select style={{ width: 130 }} value={filterMethod} onChange={e => { setFilterMethod(e.target.value); setPage(1) }}>
               <option value="all">All Methods</option>
               <option value="cash">Cash</option>
               <option value="upi">UPI</option>
@@ -592,18 +592,18 @@ function Visits({ salonId, addToast }) {
           </thead>
           <tbody>
             {loading ? [...Array(5)].map((_, i) => (
-              <tr key={i}>{[...Array(7)].map((_, j) => <td key={j}><div className="sk" style={{height:14}} /></td>)}</tr>
+              <tr key={i}>{[...Array(7)].map((_, j) => <td key={j}><div className="sk" style={{ height: 14 }} /></td>)}</tr>
             )) : paged.length === 0 ? (
               <tr><td colSpan={7}><div className="empty"><p>No visits found</p></div></td></tr>
             ) : paged.map(v => (
               <tr key={v.id}>
                 <td>
-                  <div><strong style={{fontSize:13}}>{v.customers?.name}</strong></div>
-                  <div style={{fontSize:11,color:'var(--dim)'}}>{v.customers?.mobile}</div>
+                  <div><strong style={{ fontSize: 13 }}>{v.customers?.name}</strong></div>
+                  <div style={{ fontSize: 11, color: 'var(--dim)' }}>{v.customers?.mobile}</div>
                 </td>
-                <td style={{fontSize:12,color:'var(--dim)',maxWidth:180}}>{v.service}</td>
-                <td style={{color:'var(--gold)',fontWeight:500}}>{fmt(v.amount)}</td>
-                <td style={{color:'var(--dim)'}}>{v.date}</td>
+                <td style={{ fontSize: 12, color: 'var(--dim)', maxWidth: 180 }}>{v.service}</td>
+                <td style={{ color: 'var(--gold)', fontWeight: 500 }}>{fmt(v.amount)}</td>
+                <td style={{ color: 'var(--dim)' }}>{v.date}</td>
                 <td>{sBadge(v.payment_status)}</td>
                 <td>{mBadge(v.payment_method)}</td>
                 <td>
@@ -618,13 +618,13 @@ function Visits({ salonId, addToast }) {
         </table>
         {totalPages > 1 && (
           <div className="pagination">
-            <span className="pag-info">Showing {(page-1)*PER+1}–{Math.min(page*PER,filtered.length)} of {filtered.length}</span>
+            <span className="pag-info">Showing {(page - 1) * PER + 1}–{Math.min(page * PER, filtered.length)} of {filtered.length}</span>
             <div className="pag-btns">
-              <div className="pag-btn" onClick={() => page > 1 && setPage(p => p-1)}><Icons.chevL /></div>
-              {[...Array(Math.min(totalPages,5))].map((_, i) => (
-                <div key={i} className={`pag-btn ${page===i+1?'active':''}`} onClick={() => setPage(i+1)}>{i+1}</div>
+              <div className="pag-btn" onClick={() => page > 1 && setPage(p => p - 1)}><Icons.chevL /></div>
+              {[...Array(Math.min(totalPages, 5))].map((_, i) => (
+                <div key={i} className={`pag-btn ${page === i + 1 ? 'active' : ''}`} onClick={() => setPage(i + 1)}>{i + 1}</div>
               ))}
-              <div className="pag-btn" onClick={() => page < totalPages && setPage(p => p+1)}><Icons.chevR /></div>
+              <div className="pag-btn" onClick={() => page < totalPages && setPage(p => p + 1)}><Icons.chevR /></div>
             </div>
           </div>
         )}
@@ -639,7 +639,72 @@ function Visits({ salonId, addToast }) {
     </div>
   )
 }
+const downloadCSV = (data) => {
+  const rows = [
+    ['Customer', 'Service', 'Amount', 'Date', 'Status', 'Method'],
+    ...(data.visits || []).map(v => [
+      v.customers?.name || '',
+      v.service || '',
+      v.amount || 0,
+      v.date || '',
+      v.payment_status || '',
+      v.payment_method || ''
+    ])
+  ]
+  const csv = rows.map(r => r.join(',')).join('\n')
+  const blob = new Blob([csv], { type: 'text/csv' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `report-${Date.now()}.csv`
+  a.click()
+  URL.revokeObjectURL(url)
+}
 
+const downloadPDF = (data, start, end) => {
+  const win = window.open('', '_blank')
+  win.document.write(`
+    <html><head><title>Report</title>
+    <style>
+      body{font-family:Arial;padding:20px}
+      h1{color:#C9A84C}
+      table{width:100%;border-collapse:collapse;margin-top:20px}
+      th{background:#C9A84C;color:white;padding:8px;text-align:left}
+      td{padding:8px;border-bottom:1px solid #ddd}
+      .summary{display:flex;gap:20px;margin:20px 0;flex-wrap:wrap}
+      .metric{background:#f5f5f5;padding:12px;border-radius:8px;min-width:120px}
+      .metric .label{font-size:11px;color:#666;text-transform:uppercase}
+      .metric .value{font-size:22px;font-weight:bold;color:#C9A84C}
+    </style></head><body>
+    <h1>LuxeSalon — Report</h1>
+    <p>Period: <strong>${start}</strong> to <strong>${end}</strong></p>
+    <div class="summary">
+      <div class="metric"><div class="label">Total Income</div><div class="value">₹${data.totalIncome?.toLocaleString('en-IN')}</div></div>
+      <div class="metric"><div class="label">Cash Income</div><div class="value">₹${data.cashIncome?.toLocaleString('en-IN')}</div></div>
+      <div class="metric"><div class="label">Online Income</div><div class="value">₹${data.onlineIncome?.toLocaleString('en-IN')}</div></div>
+      <div class="metric"><div class="label">Pending</div><div class="value">₹${data.pendingPayments?.toLocaleString('en-IN')}</div></div>
+      <div class="metric"><div class="label">Total Visits</div><div class="value">${data.visits?.length || 0}</div></div>
+    </div>
+    <table>
+      <thead><tr><th>Customer</th><th>Service</th><th>Amount</th><th>Date</th><th>Status</th><th>Method</th></tr></thead>
+      <tbody>
+        ${(data.visits || []).map(v => `
+          <tr>
+            <td>${v.customers?.name || ''}</td>
+            <td>${v.service || ''}</td>
+            <td>₹${Number(v.amount).toLocaleString('en-IN')}</td>
+            <td>${v.date || ''}</td>
+            <td>${v.payment_status || ''}</td>
+            <td>${v.payment_method?.toUpperCase() || ''}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+    <script>window.onload = () => window.print()</script>
+    </body></html>
+  `)
+  win.document.close()
+}
 function Reports({ salonId }) {
   const [type, setType] = useState('daily')
   const [start, setStart] = useState(today())
@@ -684,10 +749,19 @@ function Reports({ salonId }) {
           {loading ? <span className="spinner" /> : 'Generate Report'}
         </button>
       </div>
+
       {data && (
         <>
+          <div style={{ display: 'flex', gap: 10, marginBottom: 16 }}>
+            <button className="btn btn-ghost" onClick={() => downloadCSV(data)}>
+              📊 Download Excel/CSV
+            </button>
+            <button className="btn btn-ghost" onClick={() => downloadPDF(data, start, end)}>
+              📄 Download PDF
+            </button>
+          </div>
           <div className="rpt-summary">
-            <h3 style={{marginBottom:16}}>Summary — {start} to {end}</h3>
+            <h3 style={{ marginBottom: 16 }}>Summary — {start} to {end}</h3>
             <div className="rpt-grid">
               <div className="rpt-metric"><div className="lbl">Total Customers</div><div className="val c-gold">{data.totalCustomers}</div></div>
               <div className="rpt-metric"><div className="lbl">Total Income</div><div className="val c-green">{fmt(data.totalIncome)}</div></div>
@@ -702,14 +776,14 @@ function Reports({ salonId }) {
             <table>
               <thead><tr><th>Customer</th><th>Services</th><th>Amount</th><th>Date</th><th>Status</th><th>Method</th></tr></thead>
               <tbody>
-                {(data.visits||[]).length === 0
+                {(data.visits || []).length === 0
                   ? <tr><td colSpan={6}><div className="empty"><p>No visits in this period</p></div></td></tr>
-                  : (data.visits||[]).map(v => (
+                  : (data.visits || []).map(v => (
                     <tr key={v.id}>
                       <td><strong>{v.customers?.name}</strong></td>
-                      <td style={{fontSize:12,color:'var(--dim)'}}>{v.service}</td>
-                      <td style={{color:'var(--gold)'}}>{fmt(v.amount)}</td>
-                      <td style={{color:'var(--dim)'}}>{v.date}</td>
+                      <td style={{ fontSize: 12, color: 'var(--dim)' }}>{v.service}</td>
+                      <td style={{ color: 'var(--gold)' }}>{fmt(v.amount)}</td>
+                      <td style={{ color: 'var(--dim)' }}>{v.date}</td>
                       <td>{sBadge(v.payment_status)}</td>
                       <td><span className="badge badge-gray">{v.payment_method?.toUpperCase()}</span></td>
                     </tr>
@@ -744,15 +818,15 @@ function WhatsApp({ salonId }) {
       <div className="section-header"><div><h2>WhatsApp Reminders</h2><p>Customers who haven't visited in 30+ days</p></div></div>
       <div className="notice">💡 <strong>Pro tip:</strong> Sending reminders to inactive customers brings them back. Click "Send Reminder" to open WhatsApp with a pre-filled message.</div>
       {loading
-        ? <div style={{textAlign:'center',padding:40}}><span className="spinner" /></div>
+        ? <div style={{ textAlign: 'center', padding: 40 }}><span className="spinner" /></div>
         : customers.length === 0
-          ? <div className="wa-card" style={{justifyContent:'center'}}><p style={{color:'var(--green)'}}>✅ All customers visited recently. No reminders needed!</p></div>
+          ? <div className="wa-card" style={{ justifyContent: 'center' }}><p style={{ color: 'var(--green)' }}>✅ All customers visited recently. No reminders needed!</p></div>
           : customers.map(c => (
             <div key={c.id} className="wa-card">
               <div>
-                <div style={{fontWeight:500,marginBottom:4}}>{c.name}</div>
-                <div style={{fontSize:12,color:'var(--dim)'}}>📱 {c.mobile}</div>
-                <div style={{fontSize:12,color:'var(--dim)',marginTop:4}}>Last visit: <span style={{color:'var(--red)'}}>{c.lastVisit}</span></div>
+                <div style={{ fontWeight: 500, marginBottom: 4 }}>{c.name}</div>
+                <div style={{ fontSize: 12, color: 'var(--dim)' }}>📱 {c.mobile}</div>
+                <div style={{ fontSize: 12, color: 'var(--dim)', marginTop: 4 }}>Last visit: <span style={{ color: 'var(--red)' }}>{c.lastVisit}</span></div>
               </div>
               <button className="btn btn-green" onClick={() => send(c)}><Icons.whatsapp /> Send Reminder</button>
             </div>
@@ -778,7 +852,7 @@ function Sidebar({ page, setPage, user, salon, onLogout }) {
       </div>
       <nav className="sb-nav">
         {nav.map(item => (
-          <div key={item.key} className={`nav-item ${page===item.key?'active':''}`} onClick={() => setPage(item.key)}>
+          <div key={item.key} className={`nav-item ${page === item.key ? 'active' : ''}`} onClick={() => setPage(item.key)}>
             {item.icon}<span>{item.label}</span>
           </div>
         ))}
@@ -854,11 +928,11 @@ function LoginPage({ onLogin, toasts }) {
           {error && <div className="err">{error}</div>}
           <div className="ig">
             <label>Email Address</label>
-            <input type="email" placeholder="your@email.com" value={email} onChange={e => setEmail(e.target.value)} onKeyDown={e => e.key==='Enter' && handleLogin()} />
+            <input type="email" placeholder="your@email.com" value={email} onChange={e => setEmail(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleLogin()} />
           </div>
           <div className="ig">
             <label>Password</label>
-            <input type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} onKeyDown={e => e.key==='Enter' && handleLogin()} />
+            <input type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleLogin()} />
           </div>
           <button className="btn-login" onClick={handleLogin} disabled={loading}>
             {loading ? <span className="spinner" /> : 'Sign In to Dashboard'}
@@ -875,6 +949,7 @@ export default function App() {
   const [page, setPage] = useState('dashboard')
   const [toasts, setToasts] = useState([])
   const [showVisitModal, setShowVisitModal] = useState(false)
+  const [refreshKey, setRefreshKey] = useState(0)
   const [visitCustomers, setVisitCustomers] = useState([])
 
   useEffect(() => {
@@ -884,9 +959,35 @@ export default function App() {
     document.head.appendChild(s)
   }, [])
 
+  // Check saved auth + verify status on load
   useEffect(() => {
     const saved = localStorage.getItem('luxe_auth')
-    if (saved) { try { setAuth(JSON.parse(saved)) } catch { localStorage.removeItem('luxe_auth') } }
+    if (!saved) return
+    try {
+      const parsed = JSON.parse(saved)
+      // Re-verify with server
+      fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: parsed.user?.email,
+          password: parsed.user?.password_plain || ''
+        })
+      }).catch(() => { })
+      setAuth(parsed)
+
+      // Check every 30 seconds if account still active
+      const interval = setInterval(async () => {
+        const res = await fetch(`/api/auth/verify?salon_id=${parsed.user?.salon_id}`)
+        if (!res.ok) {
+          localStorage.removeItem('luxe_auth')
+          setAuth(null)
+        }
+      }, 30000)
+      return () => clearInterval(interval)
+    } catch {
+      localStorage.removeItem('luxe_auth')
+    }
   }, [])
 
   const addToast = useCallback((message, type = 'success') => {
@@ -904,7 +1005,7 @@ export default function App() {
     setShowVisitModal(true)
   }
 
-  const titles = { dashboard:'Dashboard', customers:'Customers', visits:'Visit History', reports:'Reports', whatsapp:'WhatsApp Reminders' }
+  const titles = { dashboard: 'Dashboard', customers: 'Customers', visits: 'Visit History', reports: 'Reports', whatsapp: 'WhatsApp Reminders' }
 
   if (!auth) return <LoginPage onLogin={data => { setAuth(data); localStorage.setItem('luxe_auth', JSON.stringify(data)) }} toasts={toasts} />
 
@@ -918,22 +1019,26 @@ export default function App() {
         <div className="main">
           <div className="topbar">
             <h2>{titles[page]}</h2>
-            <span style={{fontSize:12,color:'var(--dim)'}}>{new Date().toLocaleDateString('en-IN',{weekday:'short',year:'numeric',month:'short',day:'numeric'})}</span>
+            <span style={{ fontSize: 12, color: 'var(--dim)' }}>{new Date().toLocaleDateString('en-IN', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}</span>
           </div>
           <div className="content">
-            {page==='dashboard' && <Dashboard salonId={salonId} onAddVisit={handleAddVisit} />}
-            {page==='customers' && <Customers salonId={salonId} addToast={addToast} />}
-            {page==='visits' && <Visits salonId={salonId} addToast={addToast} />}
-            {page==='reports' && <Reports salonId={salonId} />}
-            {page==='whatsapp' && <WhatsApp salonId={salonId} />}
+            {page === 'dashboard' && <Dashboard key={refreshKey} salonId={salonId} onAddVisit={handleAddVisit} />}
+            {page === 'customers' && <Customers salonId={salonId} addToast={addToast} />}
+            {page === 'visits' && <Visits salonId={salonId} addToast={addToast} />}
+            {page === 'reports' && <Reports salonId={salonId} />}
+            {page === 'whatsapp' && <WhatsApp salonId={salonId} />}
           </div>
         </div>
       </div>
       {showVisitModal && (
         <VisitModal salonId={salonId} customers={visitCustomers} visit={null}
           onClose={() => setShowVisitModal(false)}
-          onSave={() => { setShowVisitModal(false); addToast('Visit saved!', 'success'); setPage('dashboard') }}
-          addToast={addToast}
+          onSave={() => {
+            setShowVisitModal(false)
+            addToast('Visit saved!', 'success')
+            setRefreshKey(k => k + 1)  // Dashboard refresh
+            setPage('dashboard')
+          }}
         />
       )}
       <Toasts toasts={toasts} />
