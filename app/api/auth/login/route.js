@@ -3,44 +3,61 @@ import { NextResponse } from 'next/server'
 
 export async function POST(req) {
   try {
-    const { email, password } = await req.json();
+    const { email, password } = await req.json()
 
+    // 1. User fetch karo
     const { data: user, error } = await supabase
       .from('users')
       .select('*, salons(*)')
       .eq('email', email)
-      .single();
+      .single()
 
     if (error || !user) {
-      return NextResponse.json({ error: 'User not found', debug: error?.message }, { status: 401 });
+      return NextResponse.json({ error: 'User not found' }, { status: 401 })
     }
 
+    // 2. Password check
     if (user.password !== password) {
-      return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
+      return NextResponse.json({ error: 'Invalid password' }, { status: 401 })
     }
 
-    if (user.role === 'owner' && user.salons) {
+    // 3. Owner ke liye salon status + expiry check
+    if (user.role === 'owner') {
+      
+      // Salon exist karta hai?
+      if (!user.salons) {
+        return NextResponse.json({ error: 'No salon linked to this account' }, { status: 403 })
+      }
+
+      // Salon inactive hai?
       if (user.salons.status === 'inactive') {
-        return NextResponse.json({ error: 'Account deactivated' }, { status: 403 });
+        return NextResponse.json({ 
+          error: 'Your account has been deactivated. Please contact admin.' 
+        }, { status: 403 })
       }
-      const today = new Date().toISOString().split('T')[0];
+
+      // License expired hai?
+      const today = new Date().toISOString().split('T')[0]
       if (user.salons.expiry < today) {
-        return NextResponse.json({ error: 'License expired' }, { status: 403 });
+        return NextResponse.json({ 
+          error: 'Your license has expired. Please renew to continue.' 
+        }, { status: 403 })
       }
     }
 
-    return NextResponse.json({ 
-      user: { 
-        id: user.id, 
-        email: user.email, 
-        name: user.name, 
-        role: user.role, 
-        salon_id: user.salons?.id || user.salon_id   // ✅ THIS WAS MISSING
+    // 4. Success
+    return NextResponse.json({
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        salon_id: user.salon_id
       },
-      salon: user.salons 
-    });
+      salon: user.salons
+    })
 
   } catch (err) {
-    return NextResponse.json({ error: 'Server error', debug: err.message }, { status: 500 });
+    return NextResponse.json({ error: 'Server error: ' + err.message }, { status: 500 })
   }
 }
