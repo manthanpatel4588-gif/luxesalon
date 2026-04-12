@@ -978,24 +978,22 @@ export default function App() {
       try {
         const res = await fetch(`/api/auth/verify?salon_id=${salonId || ''}`)
         if (!res.ok) {
-          // Account deactivated ya expired
           localStorage.removeItem('luxe_auth')
           setAuth(null)
           return
         }
-        setAuth(parsed)
+        setAuth(parsed) // ✅ sirf verify ke baad set hoga
       } catch {
-        // Network error — auth rakhو
-        setAuth(parsed)
+        setAuth(parsed) // network error pe allow karo
       }
     }
 
-    // Page load pe turant check
+    // Pehle verify karo, PHIR auth set hoga
     checkStatus()
 
-    // Har 5 second mein check — turant logout hoga
+    // Har 5 second mein check
     const interval = setInterval(async () => {
-      if (!salonId) return // admin ke liye skip
+      if (!salonId) return
       try {
         const res = await fetch(`/api/auth/verify?salon_id=${salonId}`)
         if (!res.ok) {
