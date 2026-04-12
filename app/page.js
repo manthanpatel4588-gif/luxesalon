@@ -951,6 +951,11 @@ export default function App() {
   const [showVisitModal, setShowVisitModal] = useState(false)
   const [refreshKey, setRefreshKey] = useState(0)
   const [visitCustomers, setVisitCustomers] = useState([])
+  const addToast = useCallback((message, type = 'success') => {
+  const id = Date.now()
+  setToasts(t => [...t, { id, message, type }])
+  setTimeout(() => setToasts(t => t.filter(x => x.id !== id)), 3500)
+}, [])
 
   useEffect(() => {
     if (window.Chart) return

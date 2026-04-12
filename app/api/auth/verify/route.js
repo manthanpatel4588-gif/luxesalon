@@ -4,17 +4,18 @@ import { NextResponse } from 'next/server'
 export async function GET(req) {
   const salonId = req.nextUrl.searchParams.get('salon_id')
 
+  // Admin ke liye always ok
   if (!salonId || salonId === 'null' || salonId === 'undefined') {
     return NextResponse.json({ ok: true })
   }
 
-  const { data: salon, error } = await supabase
+  const { data: salon } = await supabase
     .from('salons')
     .select('status, expiry')
     .eq('id', salonId)
     .single()
 
-  if (error || !salon) {
+  if (!salon) {
     return NextResponse.json({ error: 'Not found' }, { status: 403 })
   }
 
