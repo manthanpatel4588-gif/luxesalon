@@ -961,36 +961,52 @@ export default function App() {
 
   // Check saved auth + verify status on load
   useEffect(() => {
-  const saved = localStorage.getItem('luxe_auth')
-  if (!saved) return
-  try {
-    const parsed = JSON.parse(saved)
+    const saved = localStorage.getItem('luxe_auth')
+    if (!saved) return
 
-    const verify = async () => {
+    let parsed
+    try {
+      parsed = JSON.parse(saved)
+    } catch {
+      localStorage.removeItem('luxe_auth')
+      return
+    }
+
+    const salonId = parsed?.user?.salon_id
+
+    const checkStatus = async () => {
       try {
-        const res = await fetch('/api/auth/verify?salon_id=' + (parsed.user?.salon_id || ''))
+        const res = await fetch(`/api/auth/verify?salon_id=${salonId || ''}`)
         if (!res.ok) {
+          // Account deactivated ya expired
           localStorage.removeItem('luxe_auth')
           setAuth(null)
-        } else {
-          setAuth(parsed)
+          return
         }
+        setAuth(parsed)
       } catch {
+        // Network error — auth rakhو
         setAuth(parsed)
       }
     }
 
-    // Turant verify karo
-    verify()
+    // Page load pe turant check
+    checkStatus()
 
-    // Har 10 second mein check karo
-    const interval = setInterval(verify, 10000)
+    // Har 5 second mein check — turant logout hoga
+    const interval = setInterval(async () => {
+      if (!salonId) return // admin ke liye skip
+      try {
+        const res = await fetch(`/api/auth/verify?salon_id=${salonId}`)
+        if (!res.ok) {
+          localStorage.removeItem('luxe_auth')
+          setAuth(null)
+        }
+      } catch { }
+    }, 5000)
+
     return () => clearInterval(interval)
-
-  } catch {
-    localStorage.removeItem('luxe_auth')
-  }
-}, [])
+  }, [])
 
   const handleLogout = () => { localStorage.removeItem('luxe_auth'); setAuth(null) }
 
