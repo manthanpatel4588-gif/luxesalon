@@ -989,7 +989,8 @@ export default function App() {
         }
         setAuth(parsed) // ✅ sirf verify ke baad set hoga
       } catch {
-        setAuth(parsed) // network error pe allow karo
+        localStorage.removeItem('luxe_auth')
+        setAuth(null)
       }
     }
 
@@ -1005,7 +1006,10 @@ export default function App() {
           localStorage.removeItem('luxe_auth')
           setAuth(null)
         }
-      } catch { }
+      } catch {
+        localStorage.removeItem('luxe_auth')
+        setAuth(null)
+      }
     }, 5000)
 
     return () => clearInterval(interval)
