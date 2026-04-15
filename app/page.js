@@ -999,7 +999,7 @@ export default function App() {
 
     // Har 5 second mein check
     const interval = setInterval(async () => {
-      if (!salonId) return
+     if (!salonId) return  // admin ke liye skip — ye sahi hai
       try {
         const res = await fetch(`/api/auth/verify?salon_id=${salonId}`)
         if (!res.ok) {
@@ -1013,7 +1013,7 @@ export default function App() {
     }, 5000)
 
     return () => clearInterval(interval)
-  }, [])
+  }, []) // eslint-disable-line
 
   const handleLogout = () => { localStorage.removeItem('luxe_auth'); setAuth(null) }
 
